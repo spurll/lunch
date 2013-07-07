@@ -1,0 +1,34 @@
+$def with (form, voted, type, toggle, winner)
+
+<html>
+    <head>
+        <title>$type.capitalize() Day Voter!</title>
+    </head>
+	<body>
+		<h2>$type.capitalize() Day Voter!</h2>
+		<form action="/$type" method="POST">
+			<table>
+				$for name, score in form.iteritems():
+					<tr>
+						<td><label for="$name"/>$name</label></td>
+						$if voted:
+							<td><input type="range" min="0" max="100" step="1" value="$score" name="$name" disabled/></td>
+						$else:
+							<td><input type="range" min="0" max="100" step="1" value="$score" name="$name"/></td>
+					</tr>
+				$if voted:
+					<tr><td></td><td><input type="submit" disabled/><input type="reset" disabled/></td></tr>
+				$else:
+					<tr><td></td><td><input type="submit"/><input type="reset"/></td></tr>
+			</table>
+		</form>
+
+		<form action="/$toggle" method="GET">
+			<input type="submit" value="$toggle.capitalize() Day Voter"/>
+		</form>
+
+		$if voted and winner:
+			<h2>Winning $type.capitalize()</h2>
+			$winner
+	</body>
+</html>
