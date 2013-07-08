@@ -17,7 +17,6 @@ Feature Requests
 * Auto-create data/{type} directories if they don't exist
 * Display X runners-up (not just the winner)
 * Write an actual log-in page (and a sign-up page, I guess?)
-* Make it pretty
 
 Known Bugs
 ----------
