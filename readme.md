@@ -21,6 +21,17 @@ Known Bugs
 
 * The favicon doesn't work
 
+Requirements
+============
+
+* flask (0.10)
+* flask-login
+* flask-openid
+* sqlalchemy (0.7.9)
+* flask-sqlalchemy (0.16)
+* sqlalchemy-migrate
+* flask-wtf (0.8.4)
+
 Special Thanks
 ==============
 
