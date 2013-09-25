@@ -1,0 +1,60 @@
+<html>
+    <head>
+		{% if title %}
+			<title>{{title}}</title>
+		{% endif %}
+
+		<style type="text/css">
+			.text { font-family: serif; }
+			.window { width: 400px; margin: auto; }
+			.title { font-family: serif; font-variant: small-caps; font-size: 150%; text-align: center; padding-top: 5px; margin: auto; height: 30px; width: 400px; }
+			.user { font-family: serif; text-align: left; padding-top: 20px; padding-left: 30px; position: fixed; width: 20%; left: 0px; top: 0px; }
+			.toggle { font-family: serif; text-align: right; padding-top: 20px; padding-right: 30px; position: fixed; width: 20%; right: 0px; top: 0px; }
+			.messages { font-style: italic; text-align: center; }
+
+			a:link { text-decoration: none; color: #888888; }
+			a:visited { text-decoration: none; color: #888888; }
+			a:hover { text-decoration: none; color: #ffffff; }
+			a:active { text-decoration: none; color: #888888; }
+
+			body { color: #ffffff; background-color: #000000; overflow-y:auto; }
+			html { overflow-x: auto; overflow-y: hidden; }
+			table { width: 100%; margin-top: 20; margin-bottom: 20; }
+			input { color: #000000; }
+			input:disabled { color: #ffffff; }
+			input[type="range"] { -webkit-appearance: none !important; background: #cccccc; height: 3px; }
+			input[type="range"]:disabled { -webkit-appearance: none !important; background: #444444; height: 3px; }
+		</style>
+		<link rel="shortcut icon" href="app/static/gd.png"/>
+    </head>
+
+	<body>
+		{% if user %}
+			<div class="user">
+				Logged in as {{user.name}}. <a href="{{ url_for('logout') }}">Log out.</a>
+				{% if user.admin %}
+					<br/><a href="{{ url_for('clear') }}">Clear All Votes</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if title %}
+			<div class="title">{{title}}</div>
+		{% endif %}
+
+		{% with messages = get_flashed_messages() %}
+			<div class="messages">
+				{% if messages %}
+					{% for message in messages %}
+						{{ message }}<br/>
+					{% endfor %}
+				{% endif %}
+			</div>
+		{% endwith %}
+
+		<div class="window">
+			{% block content %}
+			{% endblock %}
+		</div>
+	</body>
+</html>

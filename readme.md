@@ -1,9 +1,11 @@
 Overview
 ========
 
-A web.py-based voting system that makes use of a basic scoring method to select a game to play or a lunch to order among people in an office (for example).
+A Python/Flask voting system that makes use of a basic scoring method to select a game to play or a lunch to order among people in an office (for example).
 
-Formerly: A PHP-based web program that allows users to select a game to play using the popular "instant runoff" voting system. It's fairly ugly.
+Authentication is done using OpenID (it's not perfect), and votes are stored in an SQLite DB.
+
+Former iterations used web.py and (worse still) PHP, and made use of the "instant runoff" (or "alternative") voting system.
 
 Bugs and Feature Requests
 =========================
@@ -11,19 +13,19 @@ Bugs and Feature Requests
 Feature Requests
 ----------------
 
-* Button should move to next type of vote (instead of toggle between the only two types)
-* Don't hard-code "game" and "lunch"; define it by the JSON
-* Navigating to / should go to /{first type}
-* Auto-create data/{type} directories if they don't exist
 * Display X runners-up (not just the winner)
-* Write an actual log-in page (and a sign-up page, I guess?)
+* Sort options alphabetically
 
 Known Bugs
 ----------
 
 * The favicon doesn't work
-* Passwords are stored in plaintext
-* There's no way to "sign out"
+
+Special Thanks
+==============
+
+The web.py version was ported to Flask with the help of Miguel Grinberg's excellent megoa-tutorial.
+http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 
 License Information
 ===================

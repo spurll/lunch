@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="text">
+		<form action="" method="POST" name="{{type}}">
+			{{form.hidden_tag()}}
+			<table>
+				{% for name in options %}
+					<tr>
+						<td>{{form.__getattribute__(name).label}}</td>
+						{% if winner %}
+							<td>{{form.__getattribute__(name)(disabled=True)}}</td>
+						{% else %}
+							<td>{{form.__getattribute__(name)}}</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</table>
+			<div style="text-align: center;">
+				{% if winner %}
+					<input type="submit" disabled/><input type="reset" disabled/>
+				{% else %}
+					<input type="submit"/><input type="reset"/>
+				{% endif %}
+			</div>
+		</form>
+
+		{% if winner %}
+			<div class="title" style="margin-top: 20;">Winning {{type.capitalize()}}</div>
+			<div style="text-align: center;">{{winner}}</div>
+		{% endif %}
+	</div>
+	<div class="toggle">
+		<a href="{{url_for("vogt", type=toggle)}}">{{toggle.capitalize()}} Day Voter</a>
+	</div>
+{% endblock %}
