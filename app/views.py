@@ -34,6 +34,13 @@ def vogt(type):
 
     vogts = User.query.get(user.id).vogts.filter_by(type=type).all()
 
+    class CurrentVogtForm(VogtForm):
+		# Must be different form for games and lunch, otherwise it might be
+		# populated with one, then if the user switches be populated with the
+		# other, resulting in a bunch of hidden, invalid values that don't
+		# validate.
+        pass
+
     for option in options:
         if vogts:
             field = IntegerRangeField(option,
@@ -44,18 +51,26 @@ def vogt(type):
             field = IntegerRangeField(option,
                     validators=[NumberRange(min=0, max=100)])
 
-        setattr(VogtForm, option, field)
+        setattr(CurrentVogtForm, option, field)
 
-    form = VogtForm()
+    form = CurrentVogtForm()
 
-    if form.validate_on_submit():
-        print "Submitting {}!".format(form)
-        for option in options:
-            v = Vogt(type=type, option=option,
-                     score=form.__getattribute__(option).data, user_id=user.id)
-            db.session.add(v)
-        db.session.commit()
-        return redirect(url_for("vogt", type=type))
+    if form.is_submitted():
+        print "Form submitted. Validating..."
+
+        if form.validate_on_submit():
+            print "Submitting {}!".format(form)
+
+            for option in options:
+                v = Vogt(type=type, option=option, user_id=user.id,
+                         score=form.__getattribute__(option).data)
+                db.session.add(v)
+
+            db.session.commit()
+            return redirect(url_for("vogt", type=type))
+        else:
+            print "Unable to validate."
+            print "Errors: {}".format(form.errors)
  
     winner = None
     if vogts:

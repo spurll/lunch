@@ -18,7 +18,7 @@ Feature Requests
 Known Bugs
 ----------
 
-* There are occasional problems where the POST method doesn't seem to do aything, but this is difficult to reproduce
+None
 
 Requirements
 ============
