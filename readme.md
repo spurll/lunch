@@ -14,12 +14,11 @@ Feature Requests
 ----------------
 
 * Display X runners-up (not just the winner)
-* Sort options alphabetically
 
 Known Bugs
 ----------
 
-* The favicon doesn't work
+* There are occasional problems where the POST method doesn't seem to do aything, but this is difficult to reproduce
 
 Requirements
 ============
