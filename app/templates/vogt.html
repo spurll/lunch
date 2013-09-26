@@ -8,9 +8,9 @@
 					<tr>
 						<td>{{form.__getattribute__(name).label}}</td>
 						{% if winner %}
-							<td>{{form.__getattribute__(name)(disabled=True)}}</td>
+							<td style="text-align: right;">{{form.__getattribute__(name)(disabled=True)}}</td>
 						{% else %}
-							<td>{{form.__getattribute__(name)}}</td>
+							<td style="text-align: right;">{{form.__getattribute__(name)}}</td>
 						{% endif %}
 					</tr>
 				{% endfor %}
