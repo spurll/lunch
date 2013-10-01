@@ -1,0 +1,21 @@
+{% extends "vogt.html" %}
+{% block ballot %}
+	<script type="text/javascript">
+		function relabel(name, value)
+		{
+			document.getElementById(name.concat("//display")).innerHTML = value;
+		}
+	</script>
+
+	{% for name in options %}
+		<tr>
+			<td>{{form.__getattribute__(name).label}}</td>
+			{% if winner %}
+				<td style="text-align: right;">{{form.__getattribute__(name)(disabled=True)}}</td>
+			{% else %}
+				<td style="text-align: right;">{{ form.__getattribute__(name)(onchange='relabel("{}", this.value)'.format(name)) }}</td>
+			{% endif %}
+			<td style="width: 30px; text-align: right;"><label id="{{ name }}//display">{{ form.__getattribute__(name).data }}</label></td>
+		</tr>
+	{% endfor %}
+{% endblock %}

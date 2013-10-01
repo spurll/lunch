@@ -19,7 +19,7 @@
 		<div style="margin-top: 20px; height: 20px">
 			{% for pr in providers %}
 				<div style="width: {{1/num_providers*100}}%; text-align: center; float: left;">
-					<a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a>
+					<a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}'); this.form.submit();">{{pr.name}}</a>
 				</div>
 			{% endfor %}
 		</div>

@@ -4,9 +4,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(basedir,'app.db'))
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
-HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
+HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
+#HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
 PORT = 9999
-SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
+#SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
 DEBUG = True
 
 CSRF_ENABLED = True
@@ -18,7 +19,7 @@ OPENID_PROVIDERS = [{'name': 'Google', 'url': 'https://www.google.com/accounts/o
                     {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
                     {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'}]
 
-OPTIONS = {"game":  ["Agricola",
+OPTIONS = {"game": [ "Agricola",
                      "Ora & Labora",
                      "Dune",
                      "Tales of the Arabian Nights",
@@ -37,28 +38,46 @@ OPTIONS = {"game":  ["Agricola",
                      "Midgard",
                      "Race for the Galaxy",
                      "Star Trek: Deck Building Game"],
-           "lunch": ["Sushi Hon",
-                     "Sura Sushi",
-                     "Sushi California",
-                     "Kenko Niwa Japanese",
-                     "Water Lily East Indian Restaurant",
-                     "Ivory",
-                     "East India Company",
-                     "Dhoom Indian Restaurant",
-                     "Desi Pizza & Curries",
-                     "Boston Pizza",
-                     "Carbone Coal Fired Pizza",
-                     "Clubhouse Pizza",
-                     "Falafel Place",
-                     "Sultan's Shawarma",
-                     "Saigon Jon's Vietnamese Kitchen",
-                     "Pho Hoang",
-                     "Thida's Thai",
-                     "Lao Thai",
-                     "China City",
-                     "Kimchi Cafe",
-                     "Pasalubong Filipino Restaurant",
-                     "Joey's Only Seafood",
-                     "Saffron Restaurant",
-                     "Boon Burger Cafe",
-                     "JC's Tacos and More"]}
+
+           "lunch": {"Sushi":          ["Sushi Hon",
+                                        "Sura Sushi",
+                                        "Sushi California",
+                                        "Kenko Niwa Japanese"],
+                     "Indian":         ["Water Lily",
+                                        "Clay Oven",
+                                        "Famena's Roti and Curry",
+                                        "Ivory",
+                                        "East India Company",
+                                        "Dhoom Indian Restaurant",
+                                        "Desi Pizza & Curries"],
+                     "Pizza":          ["Boston Pizza",
+                                        "Pizza Hut",
+                                        "Carbone Coal Fired Pizza",
+                                        "Clubhouse Pizza"],
+                     "Mediterranean":  ["A Taste of Mediterranean",
+                                        "Olympia Diner",
+                                        "Niko's Restaurant",
+                                        "Pita Pit"],
+                     "Mexican":        ["JC's Tacos and More",
+                                        "Modern Taco Company"],
+                     "Middle Eastern": ["Sultan's Shawarma",
+                                        "Kabob Palace",
+                                        "Falafel Place"],
+                     "Other Asian":    ["Saigon Jon's Vietnamese Kitchen",
+                                        "Pho Hoang",
+                                        "Thida's Thai",
+                                        "Lao Thai",
+                                        "China City",
+                                        "Kimchi Cafe",
+                                        "North Garden",
+                                        "Asia City",
+                                        "Pasalubong Filipino Restaurant"],
+                     "Burgers":        ["Boon Burger",
+                                        "Brogue Pubside",
+                                        "Nook and Cranny",
+                                        "Unburger"],
+                     "Other":          ["Joey's Only Seafood",
+                                        "Elements",
+                                        "Gohe Ethiopian",
+                                        "The Round Table",
+                                        "Saffron Restaurant"]}}

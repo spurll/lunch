@@ -41,14 +41,19 @@ def vogt(type):
 		# validate.
         pass
 
+    categories = None
+    if isinstance(options, dict):
+        categories = options
+        options = [item for cat in categories for item in categories[cat]]
+
     for option in options:
         if vogts:
             field = IntegerRangeField(option,
-                    default=User.query.get(user.id).vogts.filter_by(type=type,
-                    option=option).first().score,
+                    default=User.query.get(user.id).vogts.filter_by( \
+                    type=type, option=option).first().score,
                     validators=[NumberRange(min=0, max=100)])
         else:
-            field = IntegerRangeField(option,
+            field = IntegerRangeField(option, default=50,
                     validators=[NumberRange(min=0, max=100)])
 
         setattr(CurrentVogtForm, option, field)
@@ -76,9 +81,14 @@ def vogt(type):
     if vogts:
         winner = determine_winner(type)
 
-    return render_template("vogt.html", title=title, user=user, type=type,
-                           options=options, form=form, winner=winner,
-                           toggle=toggle)
+    if categories:
+        return render_template("complex_ballot.html", title=title, user=user,
+                               type=type, options=categories, form=form, winner=winner,
+                               toggle=toggle)
+    else:
+        return render_template("simple_ballot.html", title=title, user=user,
+                               type=type, options=options, form=form, winner=winner,
+                               toggle=toggle)
 
 
 @app.route('/login', methods=['GET', 'POST'])

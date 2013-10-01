@@ -20,6 +20,13 @@ Known Bugs
 
 None
 
+Recent Updates
+--------------
+
+* Added (optional) categories for ballot items.
+* Added sliders for each category that set the value for each sub-item.
+* Added labels displaying the current value of each vote.
+
 Requirements
 ============
 
