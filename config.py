@@ -4,10 +4,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(basedir,'app.db'))
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
-HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
-#HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
+#HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
+HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
 PORT = 9999
-#SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
+SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
 DEBUG = True
 
 CSRF_ENABLED = True
@@ -19,7 +19,8 @@ OPENID_PROVIDERS = [{'name': 'Google', 'url': 'https://www.google.com/accounts/o
                     {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
                     {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'}]
 
-OPTIONS = {"game": [ "Agricola",
+OPTIONS = {"game": [ "Terra Mystica",
+                     "Agricola",
                      "Ora & Labora",
                      "Dune",
                      "Tales of the Arabian Nights",
@@ -51,15 +52,14 @@ OPTIONS = {"game": [ "Agricola",
                                         "Dhoom Indian Restaurant",
                                         "Desi Pizza & Curries"],
                      "Pizza":          ["Boston Pizza",
-                                        "Pizza Hut",
+                                        "Diana's Gourmet Pizza",
                                         "Carbone Coal Fired Pizza",
                                         "Clubhouse Pizza"],
                      "Mediterranean":  ["A Taste of Mediterranean",
                                         "Olympia Diner",
                                         "Niko's Restaurant",
                                         "Pita Pit"],
-                     "Mexican":        ["JC's Tacos and More",
-                                        "Modern Taco Company"],
+                     "Mexican":        ["Modern Taco Company"],
                      "Middle Eastern": ["Sultan's Shawarma",
                                         "Kabob Palace",
                                         "Falafel Place"],
@@ -74,8 +74,7 @@ OPTIONS = {"game": [ "Agricola",
                                         "Pasalubong Filipino Restaurant"],
                      "Burgers":        ["Boon Burger",
                                         "Brogue Pubside",
-                                        "Nook and Cranny",
-                                        "Unburger"],
+                                        "Nook and Cranny"],
                      "Other":          ["Joey's Only Seafood",
                                         "Elements",
                                         "Gohe Ethiopian",
