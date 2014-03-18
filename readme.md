@@ -14,6 +14,7 @@ Feature Requests
 ----------------
 
 * Display X runners-up (not just the winner)
+* Display number of ballots cast
 
 Known Bugs
 ----------
