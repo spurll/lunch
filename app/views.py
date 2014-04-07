@@ -8,6 +8,7 @@ from forms import LoginForm, VogtForm
 from models import User, Vogt
 
 
+RUNNERS_UP = app.config["RUNNERS_UP"]
 all_options = app.config["OPTIONS"]
 types = list(all_options.keys())
 
@@ -77,17 +78,22 @@ def vogt(type):
             print "Unable to validate."
             print "Errors: {}".format(form.errors)
  
-    winner = None
+    winner = []
+    runners_up = []
     if vogts:
-        winner = determine_winner(type)
+        winners = determine_winners(type, RUNNERS_UP + 1)
+        winner = winners[0]
+        runners_up = winners[1:]
 
     if categories:
         return render_template("complex_ballot.html", title=title, user=user,
-                               type=type, options=categories, form=form, winner=winner,
+                               type=type, options=categories, form=form,
+                               winner=winner, runners_up=runners_up,
                                toggle=toggle)
     else:
         return render_template("simple_ballot.html", title=title, user=user,
-                               type=type, options=options, form=form, winner=winner,
+                               type=type, options=options, form=form,
+                               winner=winner, runners_up=runners_up,
                                toggle=toggle)
 
 
@@ -156,6 +162,14 @@ def determine_winner(type):
     totals = {v.option: sum([v1.score for v1 in vogts if v1.option == v.option]) for v in vogts}
     print "Totals: {}".format(totals)
     return max(totals, key=totals.get)
+
+
+def determine_winners(type, count):
+    vogts = Vogt.query.filter_by(type=type)
+    totals = {v.option: sum([v1.score for v1 in vogts if v1.option == v.option]) for v in vogts}
+    print "Totals: {}".format(totals)
+    winners = sorted(totals.keys(), key=totals.get, reverse=True)
+    return winners[:count]
 
 
 def clear_vogts():

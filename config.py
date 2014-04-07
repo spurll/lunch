@@ -4,14 +4,20 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(basedir,'app.db'))
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
-#HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
-HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
+# Local Testing
+HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
+
+# Externally Accessible
+#HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
+#SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
+
 PORT = 9999
-SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
 DEBUG = True
 
 CSRF_ENABLED = True
 SECRET_KEY = "The lion walked backward down the stairs."
+
+RUNNERS_UP = 4
 
 OPENID_PROVIDERS = [{'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},
                     {'name': 'Yahoo', 'url': 'https://me.yahoo.com'},
