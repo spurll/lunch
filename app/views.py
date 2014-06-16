@@ -9,14 +9,15 @@ from models import User, Vogt
 
 
 RUNNERS_UP = app.config["RUNNERS_UP"]
-all_options = app.config["OPTIONS"]
-types = list(all_options.keys())
+WEEKLY_MODE = app.config["WEEKLY_MODE"]
+OPTIONS = app.config["OPTIONS"]
+TYPES = list(OPTIONS.keys())
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return redirect(url_for("vogt", type=types[0]))
+    return redirect(url_for("vogt", type=TYPES[0]))
 
 
 @app.route('/<type>', methods=['GET', 'POST'])
@@ -24,12 +25,12 @@ def index():
 def vogt(type):
     user = g.user
 
-    if type not in types:
+    if type not in TYPES:
         flash('Unknown type: "{}".'.format(type))
         return redirect(url_for("index"))
 
-    toggle = types[(types.index(type) + 1) % len(types)]
-    options = all_options[type]
+    toggle = TYPES[(TYPES.index(type) + 1) % len(TYPES)]
+    options = OPTIONS[type]
 
     title = "{} Day Voter!".format(type.capitalize())
 
@@ -78,23 +79,21 @@ def vogt(type):
             print "Unable to validate."
             print "Errors: {}".format(form.errors)
  
-    winner = []
-    runners_up = []
+    winners = []
     if vogts:
-        winners = determine_winners(type, RUNNERS_UP + 1)
-        winner = winners[0]
-        runners_up = winners[1:]
+		if WEEKLY_MODE:
+			winners = weekly_winners(type)
+		else:
+			winners = determine_winners(type, RUNNERS_UP + 1)
 
     if categories:
-        return render_template("complex_ballot.html", title=title, user=user,
-                               type=type, options=categories, form=form,
-                               winner=winner, runners_up=runners_up,
-                               toggle=toggle)
+        template = "complex_ballot.html"
     else:
-        return render_template("simple_ballot.html", title=title, user=user,
-                               type=type, options=options, form=form,
-                               winner=winner, runners_up=runners_up,
-                               toggle=toggle)
+        template = "simple_ballot.html"
+
+    return render_template(template, title=title, user=user, type=type,
+                           options=categories, form=form, winner=winners,
+                           weekly=WEEKLY_MODE, toggle=toggle)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -165,12 +164,26 @@ def determine_winner(type):
 
 
 def determine_winners(type, count):
+    return vogt_totals(type)[:count]
+
+
+def weekly_winners(type):
+    winners = vogt_totals(type)
+    premium = [w for w in winners[:5] if "*" in w]
+    while len(premium) > 2:
+        # Remove premiums beyond 2.
+        print "Too many premiums! Removing {}!".format(premium[2])
+        winners.remove(premium[2])
+        premium = [w for w in winners[:5] if "*" in w]
+    return winners[:5]
+
+
+def vogt_totals(type):
     vogts = Vogt.query.filter_by(type=type)
     totals = {v.option: sum([v1.score for v1 in vogts if v1.option == v.option]) for v in vogts}
     print "Totals: {}".format(totals)
     winners = sorted(totals.keys(), key=totals.get, reverse=True)
-    return winners[:count]
-
+    return winners
 
 def clear_vogts():
     Vogt.query.delete()

@@ -3,21 +3,22 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(basedir,'app.db'))
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+PORT = 9999
 
 # Local Testing
-HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
+#HOST = "127.0.0.1"		# Must be 0.0.0.0 for external availability.
 
 # Externally Accessible
-#HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
-#SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
+HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
+SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
 
-PORT = 9999
 DEBUG = True
 
 CSRF_ENABLED = True
 SECRET_KEY = "The lion walked backward down the stairs."
 
 RUNNERS_UP = 4
+WEEKLY_MODE = True
 
 OPENID_PROVIDERS = [{'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},
                     {'name': 'Yahoo', 'url': 'https://me.yahoo.com'},
@@ -37,7 +38,6 @@ OPTIONS = {"game": [ "Terra Mystica",
                      "Power Grid",
                      "Mansions of Madness",
                      "Small World",
-                     "Ergo",
                      "Endeavor",
                      "Dominant Species",
                      "Pandemic",
@@ -47,12 +47,12 @@ OPTIONS = {"game": [ "Terra Mystica",
                      "Race for the Galaxy",
                      "Star Trek: Deck Building Game"],
 
-           "lunch": {"Sushi*":         ["Sushi Hon*",
+           "lunch": {"Sushi":          ["Sushi Hon*",
                                         "Sushi California*",
                                         "Sushi King*",
                                         "Blufish*",
                                         "Kenko Niwa Japanese*"],
-                     "Indian*":        ["Water Lily*",
+                     "Indian":         ["Water Lily*",
                                         "Clay Oven*",
                                         "Famena's Roti and Curry*",
                                         "Ivory*",
@@ -60,9 +60,8 @@ OPTIONS = {"game": [ "Terra Mystica",
                                         "Dhoom Indian Restaurant*",
                                         "Sizzling Dhaba*",
                                         "The Great Maharaja*"],
-                     "Pizza*":         ["Panago*",
+                     "Pizza":          ["Panago",
                                         "Boston Pizza*",
-                                        "Diana's Gourmet Pizza*",
                                         "Carbone Coal Fired Pizza*",
                                         "Van Goes Pizza & Chicken*",
                                         "Garbonzo's Pizza*",
@@ -81,11 +80,11 @@ OPTIONS = {"game": [ "Terra Mystica",
                                         "Falafel Place"],
                      "African":        ["Blue Nile",
                                         "Gohe Ethiopian"],
+                     "Thai":           ["Siam Thai",
+                                        "Thida's Thai"],
                      "Other Asian":    ["Saigon Jon's Vietnamese Kitchen",
                                         "Palatal Stir-Fry Express",
                                         "Pho Hoang",
-                                        "Thida's Thai",
-                                        "Lao Thai",
                                         "China City",
                                         "Kimchi Cafe",
                                         "North Garden",
@@ -93,12 +92,13 @@ OPTIONS = {"game": [ "Terra Mystica",
                                         "Loha's Asian Restaurant",
                                         "Szechuan Restaurant",
                                         "Pasalubong Filipino Restaurant"],
-                     "Burgers & Sandwiches":  ["Brogue Pubside",
-                                        "Subway",
+                     "Burgers & Sandwiches":
+                                       ["Subway",
                                         "Garry's Deli",
                                         "Myer's Delicatessen",
                                         "Red Top Drive Inn",
                                         "Nook and Cranny",
+                                        "Brogue Pubside*",
                                         "Chaise Cafe*"],
                      "Other":          ["Bodegoes",
                                         "Joey's Only Seafood",
