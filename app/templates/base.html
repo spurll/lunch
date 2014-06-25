@@ -6,11 +6,17 @@
 
 		<style type="text/css">
 			.text { font-family: serif; }
-			.window { width: 450px; margin: auto; }
-			.title { font-family: serif; font-variant: small-caps; font-size: 150%; text-align: center; padding-top: 5px; margin: auto; height: 30px; width: 400px; }
+			.window { width: 400px; margin: auto; }
+			.title { font-family: serif; font-variant: small-caps; font-size: 150%; text-align: center; padding-top: 5px; padding-bottom: 10px; margin: auto; height: 30px; width: 400px; }
+			.heading { font-family: serif; font-variant: small-caps; text-align: center; padding-top: 5px; padding-bottom: 10px; }
 			.user { font-family: serif; text-align: left; padding-top: 20px; padding-left: 30px; position: fixed; width: 20%; left: 0px; top: 0px; }
 			.toggle { font-family: serif; text-align: right; padding-top: 20px; padding-right: 30px; position: fixed; width: 20%; right: 0px; top: 0px; }
 			.messages { font-style: italic; text-align: center; }
+			.section { padding-top: 5px; padding-bottom: 10px; }
+			.reported { color: #555555; }
+			.wide { width: 65%; top: 0px; }
+			.narrow { width: 35%; top: 0px; }
+			.right { float: right; text-align: right; }
 
 			a:link { text-decoration: none; color: #888888; }
 			a:visited { text-decoration: none; color: #888888; }
@@ -19,10 +25,14 @@
 
 			body { color: #ffffff; background-color: #000000; overflow-y:auto; }
 			table { width: 100%; margin-top: 20; margin-bottom: 20; }
-			input { color: #000000; }
-			input:disabled { color: #ffffff; }
+			p { margin: 5px; text-align: center }
+
+			input[type="text"] { width: 100%; }
+			input[type="password"] { width: 100%; }
 			input[type="range"] { -webkit-appearance: none !important; background: #cccccc; height: 3px; }
 			input[type="range"]:disabled { -webkit-appearance: none !important; background: #444444; height: 3px; }
+			input { color: #000000; }
+			input:disabled { color: #ffffff; }
 		</style>
 		<link rel="shortcut icon" href="static/gd.png"/>
     </head>
@@ -31,7 +41,7 @@
 		{% if user %}
 			<div class="user">
 				Logged in as {{user.name}}. <a href="{{ url_for('logout') }}">Log out.</a>
-				{% if user.admin %}
+				{% if user.is_admin() %}
 					<br/><a href="{{ url_for('clear') }}">Clear All Votes</a>
 				{% endif %}
 			</div>
@@ -45,7 +55,7 @@
 			<div class="messages">
 				{% if messages %}
 					{% for message in messages %}
-						{{ message }}<br/>
+						<p>{{ message }}</p>
 					{% endfor %}
 				{% endif %}
 			</div>

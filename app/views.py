@@ -2,10 +2,12 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from wtforms.fields.html5 import IntegerRangeField
 from wtforms.validators import NumberRange
+import ldap
 
-from app import app, db, lm, oid
+from app import app, db, lm
 from forms import LoginForm, VogtForm
 from models import User, Vogt
+from authenticate import authenticate
 
 
 RUNNERS_UP = app.config["RUNNERS_UP"]
@@ -88,26 +90,13 @@ def vogt(type):
 
     if categories:
         template = "complex_ballot.html"
+        options = categories
     else:
         template = "simple_ballot.html"
 
     return render_template(template, title=title, user=user, type=type,
-                           options=categories, form=form, winner=winners,
+                           options=options, form=form, winner=winners,
                            weekly=WEEKLY_MODE, toggle=toggle)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-@oid.loginhandler
-def login():
-    if g.user is not None and g.user.is_authenticated():
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        session['remember_me'] = form.remember_me.data
-        return oid.try_login(form.openid.data, ask_for=['nickname', 'email'])
-    return render_template('login.html', title='Log In', form=form,
-                           providers=app.config['OPENID_PROVIDERS'],
-                           num_providers=len(app.config['OPENID_PROVIDERS']))
 
 
 @app.route('/logout')
@@ -120,40 +109,57 @@ def logout():
 @login_required
 def clear():
     user = g.user
-    if user.admin:
+    if user.is_admin():
         clear_vogts()
     return redirect(url_for('index'))
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if g.user is not None and g.user.is_authenticated():
+        return redirect(url_for('index'))
+
+    form = LoginForm()
+
+    if request.method == 'GET':
+        return render_template('login.html', title="Log In", form=form)
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        try:
+            print "Logging in..."
+            user = authenticate(username, password)
+        except ldap.INVALID_CREDENTIALS:
+            user = None
+
+        if not user:
+            print "Login failed."
+            flash("Login failed.")
+            return render_template('login.html', title="Log In", form=form)
+
+        if user and user.is_authenticated():
+            db_user = User.query.get(user.id)
+            if db_user is None:
+                db.session.add(user)
+                db.session.commit()
+
+            login_user(user, remember=form.remember.data)
+
+            return redirect(request.args.get('next') or url_for('index'))
+
+    return render_template('login.html', title="Log In", form=form)
+
+
 @lm.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    return User.query.get(id)
 
 
 @app.before_request
 def before_request():
     g.user = current_user
-
-
-@oid.after_login
-def after_login(resp):
-    if resp.email is None or resp.email == "":
-        flash('Invalid login. Please try again.')
-        return redirect(url_for('login'))
-    user = User.query.filter_by(email = resp.email).first()
-    if user is None:
-        name = resp.nickname
-        if name is None or name == "":
-            name = resp.email.split('@')[0]
-        user = User(name=name, email=resp.email)
-        db.session.add(user)
-        db.session.commit()
-    remember_me = False
-    if 'remember_me' in session:
-        remember_me = session['remember_me']
-        session.pop('remember_me', None)
-    login_user(user, remember=remember_me)
-    return redirect(request.args.get('next') or url_for('index'))
 
 
 def determine_winner(type):

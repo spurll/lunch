@@ -1,8 +1,8 @@
 from app import app, db
 
+
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    admin = db.Column(db.Boolean, default=False)
+    id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     vogts = db.relationship('Vogt', backref='user', lazy='dynamic')
@@ -16,11 +16,15 @@ class User(db.Model):
     def is_anonymous(self):
         return False
 
+    def is_admin(self):
+        return self.id in app.config["ADMIN_USERS"]
+
     def get_id(self):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        return '<User {}>'.format(self.name)
+
 
 class Vogt(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,4 +34,4 @@ class Vogt(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Vogt %r>' % (self.option)
+        return '<Vogt {}>'.format(self.option)

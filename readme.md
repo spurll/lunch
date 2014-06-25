@@ -3,9 +3,7 @@ Overview
 
 A Python/Flask voting system that makes use of a basic scoring method to select a game to play or a lunch to order among people in an office (for example).
 
-Authentication is done using OpenID (it's not perfect), and votes are stored in an SQLite DB.
-
-Former iterations used web.py and (worse still) PHP, and made use of the "instant runoff" (or "alternative") voting system.
+Authentication is done via LDAP (so you'll need access to an LDAP server), and votes are stored in an SQLite DB.
 
 Installation
 ============
@@ -13,7 +11,7 @@ Installation
 Instructions
 ------------
 
-The config.py file contains values for HOST and SERVER_NAME for local testing and for running deployed on your own server. Comment out the appropriate line (and, if deploying, edit the SERVER_NAME appropriately). Make note of the PORT number specified, as this is also required to connect. Before running for the first time, run db_create.py. Then simply execute run.py.
+Before running for the first time, run db_create.py. Then simply execute run.py.
 
 Bugs and Feature Requests
 =========================
@@ -33,10 +31,10 @@ Requirements
 
 * flask (0.10)
 * flask-login
-* flask-openid
-* sqlalchemy (0.7.9)
-* flask-sqlalchemy (0.16)
 * flask-wtf (0.8.4)
+* flask-sqlalchemy (0.16)
+* sqlalchemy (0.7.9)
+* python-ldap
 
 Special Thanks
 ==============

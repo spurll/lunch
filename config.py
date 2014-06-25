@@ -3,15 +3,14 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = True
 PORT = 9999
 
 # Local Testing
-#HOST = "127.0.0.1"		 # Must be 0.0.0.0 for external availability.
-#SERVER_NAME = "localhost:{}".format(PORT)
+TEST_HOST = "127.0.0.1"     # Must be 0.0.0.0 for external availability.
+TEST_SERVER_NAME = "localhost:{}".format(PORT)
 
 # Externally Accessible
-HOST = "0.0.0.0"		# Must be 0.0.0.0 for external availability.
+HOST = "0.0.0.0"		    # Must be 0.0.0.0 for external availability.
 SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
 
 CSRF_ENABLED = True
@@ -22,11 +21,10 @@ WEEKLY_MODE = True
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(basedir,'app.db'))
 
-OPENID_PROVIDERS = [{'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},
-                    {'name': 'Yahoo', 'url': 'https://me.yahoo.com'},
-                    {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'},
-                    {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
-                    {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'}]
+LDAP_URI = "ldap://ec2-23-23-226-137.compute-1.amazonaws.com"
+LDAP_SEARCH_BASE = "ou=People,dc=invenia,dc=ca"
+
+ADMIN_USERS = ["gem.newman"]
 
 OPTIONS = {"game": [ "Terra Mystica",
                      "Star Cluster",
