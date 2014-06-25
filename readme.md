@@ -7,6 +7,14 @@ Authentication is done using OpenID (it's not perfect), and votes are stored in 
 
 Former iterations used web.py and (worse still) PHP, and made use of the "instant runoff" (or "alternative") voting system.
 
+Installation
+============
+
+Instructions
+------------
+
+The config.py file contains values for HOST and SERVER_NAME for local testing and for running deployed on your own server. Comment out the appropriate line (and, if deploying, edit the SERVER_NAME appropriately). Make note of the PORT number specified, as this is also required to connect. Before running for the first time, run db_create.py. Then simply execute run.py.
+
 Bugs and Feature Requests
 =========================
 
@@ -20,13 +28,6 @@ Known Bugs
 
 None
 
-Recent Updates
---------------
-
-* Added (optional) categories for ballot items.
-* Added sliders for each category that set the value for each sub-item.
-* Added labels displaying the current value of each vote.
-
 Requirements
 ============
 
@@ -35,7 +36,6 @@ Requirements
 * flask-openid
 * sqlalchemy (0.7.9)
 * flask-sqlalchemy (0.16)
-* sqlalchemy-migrate
 * flask-wtf (0.8.4)
 
 Special Thanks
