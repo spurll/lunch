@@ -1,7 +1,7 @@
 Overview
 ========
 
-A Python/Flask voting system that makes use of a basic scoring method to select a game to play or a lunch to order among people in an office (for example).
+A Python/Flask voting system that makes use of a basic scoring method to select a game to play or a lunch to order among people in an office (for example). Can also send reminders and results via Slack messages.
 
 Authentication is done via LDAP (so you'll need access to an LDAP server), and votes are stored in an SQLite DB.
 
@@ -39,7 +39,7 @@ Requirements
 Special Thanks
 ==============
 
-The web.py version was ported to Flask with the help of Miguel Grinberg's excellent megoa-tutorial.
+The web.py version was ported to Flask with the help of Miguel Grinberg's excellent mega-tutorial.
 http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 
 License Information

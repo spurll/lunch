@@ -34,4 +34,4 @@ class Vogt(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Vogt {}>'.format(self.option)
+        return '<Vogt {}: {}>'.format(self.option, self.score)

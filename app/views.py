@@ -8,6 +8,7 @@ from app import app, db, lm
 from forms import LoginForm, VogtForm
 from models import User, Vogt
 from authenticate import authenticate
+from util import determine_winner, determine_winners, weekly_winners, vogt_totals, clear_vogts
 
 
 RUNNERS_UP = app.config["RUNNERS_UP"]
@@ -51,14 +52,13 @@ def vogt(type):
         options = [item for cat in categories for item in categories[cat]]
 
     for option in options:
-        if vogts:
-            field = IntegerRangeField(option,
-                    default=User.query.get(user.id).vogts.filter_by( \
-                    type=type, option=option).first().score,
-                    validators=[NumberRange(min=0, max=100)])
-        else:
-            field = IntegerRangeField(option, default=50,
-                    validators=[NumberRange(min=0, max=100)])
+        default = 50
+        ballot = User.query.get(user.id).vogts.filter_by(type=type,
+                 option=option).first()
+        if ballot: default = ballot.score
+
+        field = IntegerRangeField(option, default=default,
+                validators=[NumberRange(min=0, max=100)])
 
         setattr(CurrentVogtForm, option, field)
 
@@ -161,36 +161,3 @@ def load_user(id):
 def before_request():
     g.user = current_user
 
-
-def determine_winner(type):
-    vogts = Vogt.query.filter_by(type=type)
-    totals = {v.option: sum([v1.score for v1 in vogts if v1.option == v.option]) for v in vogts}
-    print "Totals: {}".format(totals)
-    return max(totals, key=totals.get)
-
-
-def determine_winners(type, count):
-    return vogt_totals(type)[:count]
-
-
-def weekly_winners(type):
-    winners = vogt_totals(type)
-    premium = [w for w in winners[:5] if "*" in w]
-    while len(premium) > 2:
-        # Remove premiums beyond 2.
-        print "Too many premiums! Removing {}!".format(premium[2])
-        winners.remove(premium[2])
-        premium = [w for w in winners[:5] if "*" in w]
-    return winners[:5]
-
-
-def vogt_totals(type):
-    vogts = Vogt.query.filter_by(type=type)
-    totals = {v.option: sum([v1.score for v1 in vogts if v1.option == v.option]) for v in vogts}
-    print "Totals: {}".format(totals)
-    winners = sorted(totals.keys(), key=totals.get, reverse=True)
-    return winners
-
-def clear_vogts():
-    Vogt.query.delete()
-    db.session.commit()
