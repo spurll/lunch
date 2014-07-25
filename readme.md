@@ -19,7 +19,7 @@ Bugs and Feature Requests
 Feature Requests
 ----------------
 
-* Display number of ballots cast
+None
 
 Known Bugs
 ----------

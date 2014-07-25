@@ -94,9 +94,10 @@ def vogt(type):
     else:
         template = "simple_ballot.html"
 
+    vogters = filter(lambda u: u.vogts.all(), User.query.all())
     return render_template(template, title=title, user=user, type=type,
                            options=options, form=form, winner=winners,
-                           weekly=WEEKLY_MODE, toggle=toggle)
+                           weekly=WEEKLY_MODE, vogters=vogters, toggle=toggle)
 
 
 @app.route('/logout')
