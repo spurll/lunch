@@ -39,6 +39,7 @@ def slack_message(token, text):
                "channel": "#food",
                "username": "LunchBot",
                "icon_url": "http://savage.startleddisbelief.com/LunchBot.png",
+               "link_names": 1,
                "text": text}
     r = post("https://slack.com/api/chat.postMessage", data=payload)
     return r
@@ -58,7 +59,7 @@ def slack_weekly_lunch(token):
 
 
 def slack_reminder(token):
-    text = "Reminder! Please vogt for next week's lunch selections!\n"        \
+    text = "@channel: Please vogt for next week's lunch selections!\n"        \
            "http://savage.startleddisbelief.com/lunch"
     slack_message(token, text)
 
