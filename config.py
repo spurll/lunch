@@ -82,7 +82,6 @@ OPTIONS = {
                     "Van Goes Pizza & Chicken*",
                     "Garbonzo's Pizza*",
                     "Doughboys Pizzeria*",
-                    "Desi Pizza & Curries*",
                 ],
             "Mediterranean":
                 [
@@ -127,21 +126,21 @@ OPTIONS = {
                     "Saigon Jon's Vietnamese Kitchen",
                     "Palatal Stir-Fry Express",
                     "Pho Hoang",
-                    "Kimchi Cafe*",
                     "Loha's Asian Restaurant",
                     "Pasalubong Filipino Restaurant",
+                    "Kimchi Cafe*",
                 ],
             "Burgers & Sandwiches":
                 [
                     "Subway",
                     "Boon Burger",
-                    "Fox and Fiddle",
                     "Garry's Deli",
                     "Myer's Delicatessen",
                     "Red Top Drive Inn",
                     "Nook and Cranny",
-                    "Brogue Pubside*",
                     "Wendy's",
+                    "Brogue Pubside*",
+                    "Fox and Fiddle*",
                     "Chaise Cafe*",
                 ],
             "Other":
@@ -153,8 +152,8 @@ OPTIONS = {
                     "Swiss Chalet",
                     "Chester Fried Chicken",
                     "Stella's Cafe and Bakery",
-                    "Bistro 7 1/4*",
                     "The Round Table*",
+                    "Bistro 7 1/4*",
                 ],
         }
     }
