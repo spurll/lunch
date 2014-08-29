@@ -4,18 +4,23 @@
 # Attribution-NonCommercial-ShareAlike 3.0 Unported License.                    
 
 
+from werkzeug.serving import run_simple
 from argparse import ArgumentParser
 
 from app import app
 
 
 if __name__ == '__main__':
-    description = "Runs the Flask server for the Game/Lunch Day Voter."
+    description = "Runs the Flask server for the lunch voting system."
     parser = ArgumentParser(description=description)
     parser.add_argument("-t", "--test", help="Changes host information to "
                         "allow access via localhost.", action="store_true")
-    parser.add_argument("-n", "--nodebug", help="Turns off server debug "
-                        "settings, including the reloader.",
+    parser.add_argument("-d", "--debug", help="Turns server debug mode on. "
+                        "(Not recommended for world-accesible servers!)",
+                        action="store_true")
+    parser.add_argument("-r", "--reload", help="Turns the automatic realoder "
+                        "on. This setting restarts the server whenever a "
+                        "change in the source is detected.",
                         action="store_true")
     args = parser.parse_args()
 
@@ -23,5 +28,6 @@ if __name__ == '__main__':
         app.config["SERVER_NAME"] = app.config["TEST_SERVER_NAME"]
         app.config["HOST"] = app.config["TEST_HOST"]
 
-    app.run(app.config["HOST"], app.config["PORT"], debug=not args.nodebug)
+    run_simple(app.config["HOST"], app.config["PORT"], app,
+               use_debugger=args.debug, use_reloader=args.reload)
 
