@@ -15,6 +15,7 @@ SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
 
 CSRF_ENABLED = True
 SECRET_KEY = os.urandom(30)
+PROPAGATE_EXCEPTIONS = True
 
 RUNNERS_UP = 4
 WEEKLY_MODE = True
