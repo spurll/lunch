@@ -20,6 +20,7 @@ Requirements
 * flask-sqlalchemy (0.16)
 * sqlalchemy (0.7.9)
 * python-ldap
+* [slackutils](https://github.com/spurll/slackutils/)
 
 Bugs and Feature Requests
 =========================

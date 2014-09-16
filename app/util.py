@@ -1,4 +1,5 @@
 from requests import post
+from slackutils import Slack
 
 from app import db
 from models import User, Vogt
@@ -34,34 +35,28 @@ def vogt_totals(type):
     return winners
 
 
-def slack_message(token, text):
-    payload = {"token": token,
-               "channel": "#food",
-               "username": "LunchBot",
-               "icon_url": "http://savage.startleddisbelief.com/LunchBot.png",
-               "link_names": 1,
-               "text": text}
-    r = post("https://slack.com/api/chat.postMessage", data=payload)
-    return r
+def slack_message(token, text, notify=False):
+    s = Slack(token, name="LunchBot",
+              icon="http://savage.startleddisbelief.com/LunchBot.png")
+    return s.send("#food", text, notify=notify)
 
 
 def slack_weekly_lunch(token):
     w = weekly_winners("lunch")
     if w:
         text = "This week's lunches have been decided!\n\n{}\n\nPlease see "  \
-               "that you have orders placed in the Standing Orders document:" \
-               "\nhttps://docs.google.com/spreadsheets/d/1l-j4Gdn2-"          \
-               "eO6bnHSLuF4GJxU1irYaPdUQpXKC3Cj7Cc/"                          \
-               .format("\n".join(w))
+               "that you have orders placed in the <https://docs.google.com/" \
+               "spreadsheets/d/1l-j4Gdn2-eO6bnHSLuF4GJxU1irYaPdUQpXKC3Cj7Cc/" \
+               "|standing orders document>.".format("\n".join(w))
         slack_message(token, text)
     else:
         print "No vogts to tally."
 
 
-def slack_reminder(token):
-    text = "@channel: Please vogt for next week's lunch selections!\n"        \
-           "http://savage.startleddisbelief.com/lunch"
-    slack_message(token, text)
+def slack_reminder(token, message=None):
+    if not message: message = "Please vogt for next week's lunch selections!"
+    text = "<http://savage.startleddisbelief.com/lunch|" + message + ">"
+    slack_message(token, text, notify=True)
 
 
 def clear_vogts():
