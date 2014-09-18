@@ -1,26 +1,20 @@
-import os
+from os import urandom, path
 
 
 CSRF_ENABLED = True
-SECRET_KEY = os.urandom(30)
+SECRET_KEY = urandom(30)
 PROPAGATE_EXCEPTIONS = True
 
-PORT = 9999
-
-# Externally Accessible
-HOST = "0.0.0.0"
-SERVER_NAME = "savage.startleddisbelief.com:{}".format(PORT)
-
-RUNNERS_UP = 4
-WEEKLY_MODE = True
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(basedir,'app.db'))
+basedir = path.abspath(path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(path.join(basedir, "app.db"))
 
 LDAP_URI = "ldap://ec2-23-23-226-137.compute-1.amazonaws.com"
 LDAP_SEARCH_BASE = "ou=People,dc=invenia,dc=ca"
 
 ADMIN_USERS = ["gem.newman"]
+
+RUNNERS_UP = 4
+WEEKLY_MODE = True
 
 OPTIONS = {
     "game":
