@@ -1,7 +1,7 @@
 from requests import post
 from slackutils import Slack
 
-from app import db
+from lunch import db
 from models import User, Vogt
 
 

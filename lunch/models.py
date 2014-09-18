@@ -1,4 +1,4 @@
-from app import app, db
+from lunch import app, db
 
 
 class User(db.Model):

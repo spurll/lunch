@@ -4,7 +4,7 @@ from wtforms.fields.html5 import IntegerRangeField
 from wtforms.validators import NumberRange
 import ldap
 
-from app import app, db, lm
+from lunch import app, db, lm
 from forms import LoginForm, VogtForm
 from models import User, Vogt
 from authenticate import authenticate
@@ -20,6 +20,7 @@ TYPES = list(OPTIONS.keys())
 @app.route('/')
 @app.route('/index')
 def index():
+    print "Blah!"
     return redirect(url_for("vogt", type=TYPES[0]))
 
 

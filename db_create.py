@@ -1,5 +1,5 @@
 #!/usr/bin/env python
 
-from app import db
+from lunch import db
 
 db.create_all()
