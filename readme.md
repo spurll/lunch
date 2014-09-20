@@ -3,13 +3,8 @@ Lunch Voter
 
 A Python/Flask voting system that makes use of a basic scoring (voting) method to select a restaurant to order lunch from or a game to play (or any number of other things). Can also send reminders and results via Slack messages. Authentication is done via LDAP (so you'll need access to an LDAP server), and votes are stored in an SQLite DB.
 
-Installation
-============
-
-Instructions
-------------
-
-Edit `config.py` and specify the desired hostname and port. Before running for the first time, run `db_create.py`. Then simply execute `run.py`. (By default, it will be externally accessible. For testing on localhost, use the `--test` flag.)
+Usage
+=====
 
 Requirements
 ------------
@@ -22,14 +17,23 @@ Requirements
 * python-ldap
 * [slackutils](https://github.com/spurll/slackutils/)
 
+Configuration
+-------------
+
+Before starting the server for the first time, run `db_create.py`.
+
+Starting the Server
+-------------------
+
+Start the server with `run.py`. By default it will be accessible at `localhost:9999`. To make the server world-accessible or for other options, see `run.py -h`.
+
 Bugs and Feature Requests
 =========================
 
 Feature Requests
 ----------------
 
-* Should probably be updated to use a proper WSGI server. (More info [here](http://flask.pocoo.org/docs/0.10/deploying/#deployment).)
-* It would be nice to get all Flask applications running on one server. (More info [here](http://flask.pocoo.org/docs/0.10/patterns/appdispatch/#combining-applications).)
+None
 
 Known Bugs
 ----------
