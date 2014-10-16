@@ -59,6 +59,20 @@ def slack_reminder(token, message=None):
     slack_message(token, text, notify=True)
 
 
-def clear_vogts():
-    Vogt.query.delete()
+def clear_vogts(user=None):
+    if user:
+        User.query.get(user.id).vogts.delete()
+    else:
+        Vogt.query.delete()
+
     db.session.commit()
+
+
+def clear_favourites(user=None):
+    if user:
+        User.query.get(user.id).favourites.delete()
+    else:
+        Favourites.query.delete()
+
+    db.session.commit()
+

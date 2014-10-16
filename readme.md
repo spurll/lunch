@@ -28,8 +28,7 @@ Bugs and Feature Requests
 Feature Requests
 ----------------
 
-* Should probably be updated to use a proper WSGI server. (More info [here](http://flask.pocoo.org/docs/0.10/deploying/#deployment).)
-* It would be nice to get all Flask applications running on one server. (More info [here](http://flask.pocoo.org/docs/0.10/patterns/appdispatch/#combining-applications).)
+None.
 
 Known Bugs
 ----------

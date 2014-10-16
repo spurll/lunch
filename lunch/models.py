@@ -6,6 +6,7 @@ class User(db.Model):
     name = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     vogts = db.relationship('Vogt', backref='user', lazy='dynamic')
+    favourites = db.relationship('Favourite', backref='user', lazy='dynamic')
 
     def is_authenticated(self):
         return True
@@ -27,11 +28,21 @@ class User(db.Model):
 
 
 class Vogt(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(128))
-    option = db.Column(db.String(128))
+    type = db.Column(db.String(128), primary_key=True)
+    option = db.Column(db.String(128), primary_key=True)
     score = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
 
     def __repr__(self):
         return '<Vogt {}: {}>'.format(self.option, self.score)
+
+
+class Favourite(db.Model):
+    type = db.Column(db.String(128), primary_key=True)
+    option = db.Column(db.String(128), primary_key=True)
+    score = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
+    def __repr__(self):
+        return '<Favourite {}: {}>'.format(self.option, self.score)
+

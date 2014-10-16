@@ -6,7 +6,7 @@ import ldap
 
 from lunch import app, db, lm
 from forms import LoginForm, VogtForm
-from models import User, Vogt
+from models import User, Vogt, Favourite
 from authenticate import authenticate
 from util import determine_winner, determine_winners, weekly_winners, vogt_totals, clear_vogts
 
@@ -20,7 +20,6 @@ TYPES = list(OPTIONS.keys())
 @app.route('/')
 @app.route('/index')
 def index():
-    print "Blah!"
     return redirect(url_for("vogt", type=TYPES[0]))
 
 
@@ -39,6 +38,7 @@ def vogt(type):
     title = "{} Day Voter!".format(type.capitalize())
 
     vogts = User.query.get(user.id).vogts.filter_by(type=type).all()
+    favourites = User.query.get(user.id).favourites.filter_by(type=type).all()
 
     class CurrentVogtForm(VogtForm):
 		# Must be different form for games and lunch, otherwise it might be
@@ -47,18 +47,30 @@ def vogt(type):
 		# validate.
         pass
 
+    # Define categories (if options are divided into categories).
     categories = None
     if isinstance(options, dict):
         categories = options
         options = [item for cat in categories for item in categories[cat]]
 
+    # Create the form element for each option.
     for option in options:
-        default = 50
         ballot = User.query.get(user.id).vogts.filter_by(type=type,
                  option=option).first()
-        if ballot: default = ballot.score
+        favourite = User.query.get(user.id).favourites.filter_by(type=type,
+                 option=option).first()
 
-        field = IntegerRangeField(option, default=default,
+        if ballot:
+            # Initialize the element to the value of the ballot cast.
+            value = ballot.score
+        elif favourite:
+            # Initialize the element to the saved value for this option.
+            value = favourite.score
+        else:
+            # Initialize the element to the default score.
+            value = 50
+
+        field = IntegerRangeField(option, default=value,
                 validators=[NumberRange(min=0, max=100)])
 
         setattr(CurrentVogtForm, option, field)
@@ -71,13 +83,22 @@ def vogt(type):
         if form.validate_on_submit():
             print "Submitting {}!".format(form)
 
+            # Record the vogts.
             for option in options:
                 v = Vogt(type=type, option=option, user_id=user.id,
                          score=form.__getattribute__(option).data)
-                db.session.add(v)
+                db.session.merge(v)
+
+            # Delete existing favourites, then add each new favourite.
+            if form.favourite.data:
+                for option in options:
+                    f = Favourite(type=type, option=option, user_id=user.id,
+                                  score=form.__getattribute__(option).data)
+                    db.session.merge(f)
 
             db.session.commit()
             return redirect(url_for("vogt", type=type))
+
         else:
             print "Unable to validate."
             print "Errors: {}".format(form.errors)

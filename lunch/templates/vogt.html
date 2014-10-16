@@ -7,13 +7,10 @@
 				{% block ballot %}
 				{% endblock %}
 			</table>
-			<div style="text-align: center;">
-				{% if winner %}
-					<input type="submit" disabled/><input type="reset" disabled/>
-				{% else %}
-					<input type="submit"/><input type="reset"/>
-				{% endif %}
-			</div>
+			{% if not winner %}
+				<p style="margin-bottom: 20px">{{form.favourite}} {{form.favourite.label}}</p>
+				<p><input type="submit"/> <input type="reset"/></p>
+			{% endif %}
 		</form>
 
 		{% if weekly %}

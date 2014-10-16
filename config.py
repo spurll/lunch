@@ -79,6 +79,8 @@ OPTIONS = {
                     "Olympia Diner",
                     "Niko's Restaurant",
                     "Pita Pit",
+                    "Bombolini*",
+                    "Brooklyn's Bistro*",
                 ],
             "Mexican":
                 [
@@ -135,6 +137,7 @@ OPTIONS = {
                 ],
             "Other":
                 [
+                    "Booster Juice",
                     "Bodegoes",
                     "Joey's Only Seafood",
                     "Elements",

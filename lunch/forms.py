@@ -10,4 +10,5 @@ class LoginForm(Form):
 
 
 class VogtForm(Form):
+    favourite = BooleanField("Remember Preferences", default=False)
     pass
