@@ -9,6 +9,6 @@ class LoginForm(Form):
     remember = BooleanField("Remember Me", default=False)
 
 
-class VogtForm(Form):
+class VoteForm(Form):
     favourite = BooleanField("Remember Preferences", default=False)
     pass

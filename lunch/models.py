@@ -1,3 +1,4 @@
+from __future__ import division
 from lunch import app, db
 
 
@@ -5,7 +6,7 @@ class User(db.Model):
     id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
-    vogts = db.relationship('Vogt', backref='user', lazy='dynamic')
+    votes = db.relationship('Vote', backref='user', lazy='dynamic')
     favourites = db.relationship('Favourite', backref='user', lazy='dynamic')
 
     def is_authenticated(self):
@@ -27,14 +28,14 @@ class User(db.Model):
         return '<User {}>'.format(self.name)
 
 
-class Vogt(db.Model):
+class Vote(db.Model):
     type = db.Column(db.String(128), primary_key=True)
     option = db.Column(db.String(128), primary_key=True)
     score = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
 
     def __repr__(self):
-        return '<Vogt {}: {}>'.format(self.option, self.score)
+        return '<Vote {}: {}>'.format(self.option, self.score)
 
 
 class Favourite(db.Model):
@@ -45,4 +46,17 @@ class Favourite(db.Model):
 
     def __repr__(self):
         return '<Favourite {}: {}>'.format(self.option, self.score)
+
+
+class History(db.Model):
+    type = db.Column(db.String(128), primary_key=True)
+    option = db.Column(db.String(128), primary_key=True)
+    total = db.Column(db.Integer)
+    ballots = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<History {}: {}>'.format(self.option, self.score())
+
+    def score(self):
+        return self.total / self.ballots    # Floating-point division, future.
 

@@ -31,14 +31,15 @@
 			{% endfor %}
 		{% endif %}
 
-		{% if vogters %}
+		{% if voters %}
 			<div class="title" style="margin-top: 20;">Ballots Cast:</div>
-			{% for u in vogters %}
+			{% for u in voters %}
 				<div style="text-align: center;">{{u.name}}</div>
 			{% endfor %}
 		{% endif %}
 	</div>
 	<div class="toggle">
-		<a href="{{url_for("vogt", type=toggle)}}">{{toggle.capitalize()}} Day Voter</a>
+		<a href="{{url_for("show_history", type=type)}}">{{type.capitalize()}} Voting History</a>
+		<br/><a href="{{url_for("vote", type=toggle)}}">{{toggle.capitalize()}} Day Voter</a>
 	</div>
 {% endblock %}

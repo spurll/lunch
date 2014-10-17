@@ -1,14 +1,12 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from wtforms.fields.html5 import IntegerRangeField
-from wtforms.validators import NumberRange
 import ldap
 
 from lunch import app, db, lm
-from forms import LoginForm, VogtForm
-from models import User, Vogt, Favourite
+from forms import LoginForm, VoteForm
+from models import User, Vote, Favourite
 from authenticate import authenticate
-from util import determine_winner, determine_winners, weekly_winners, vogt_totals, clear_vogts
+from util import *
 
 
 RUNNERS_UP = app.config["RUNNERS_UP"]
@@ -20,12 +18,12 @@ TYPES = list(OPTIONS.keys())
 @app.route('/')
 @app.route('/index')
 def index():
-    return redirect(url_for("vogt", type=TYPES[0]))
+    return redirect(url_for("vote", type=TYPES[0]))
 
 
 @app.route('/<type>', methods=['GET', 'POST'])
 @login_required
-def vogt(type):
+def vote(type):
     user = g.user
 
     if type not in TYPES:
@@ -37,15 +35,8 @@ def vogt(type):
 
     title = "{} Day Voter!".format(type.capitalize())
 
-    vogts = User.query.get(user.id).vogts.filter_by(type=type).all()
+    votes = User.query.get(user.id).votes.filter_by(type=type).all()
     favourites = User.query.get(user.id).favourites.filter_by(type=type).all()
-
-    class CurrentVogtForm(VogtForm):
-		# Must be different form for games and lunch, otherwise it might be
-		# populated with one, then if the user switches be populated with the
-		# other, resulting in a bunch of hidden, invalid values that don't
-		# validate.
-        pass
 
     # Define categories (if options are divided into categories).
     categories = None
@@ -53,58 +44,22 @@ def vogt(type):
         categories = options
         options = [item for cat in categories for item in categories[cat]]
 
-    # Create the form element for each option.
-    for option in options:
-        ballot = User.query.get(user.id).vogts.filter_by(type=type,
-                 option=option).first()
-        favourite = User.query.get(user.id).favourites.filter_by(type=type,
-                 option=option).first()
-
-        if ballot:
-            # Initialize the element to the value of the ballot cast.
-            value = ballot.score
-        elif favourite:
-            # Initialize the element to the saved value for this option.
-            value = favourite.score
-        else:
-            # Initialize the element to the default score.
-            value = 50
-
-        field = IntegerRangeField(option, default=value,
-                validators=[NumberRange(min=0, max=100)])
-
-        setattr(CurrentVogtForm, option, field)
-
-    form = CurrentVogtForm()
+    form = create_ballot(type, options, user)
 
     if form.is_submitted():
         print "Form submitted. Validating..."
 
         if form.validate_on_submit():
-            print "Submitting {}!".format(form)
-
-            # Record the vogts.
-            for option in options:
-                v = Vogt(type=type, option=option, user_id=user.id,
-                         score=form.__getattribute__(option).data)
-                db.session.merge(v)
-
-            # Delete existing favourites, then add each new favourite.
-            if form.favourite.data:
-                for option in options:
-                    f = Favourite(type=type, option=option, user_id=user.id,
-                                  score=form.__getattribute__(option).data)
-                    db.session.merge(f)
-
-            db.session.commit()
-            return redirect(url_for("vogt", type=type))
+            print "Validated ballot: {}".format(form)
+            submit_vote(type, options, user, form)
+            return redirect(url_for("vote", type=type))
 
         else:
             print "Unable to validate."
             print "Errors: {}".format(form.errors)
  
     winners = []
-    if vogts:
+    if votes:
 		if WEEKLY_MODE:
 			winners = weekly_winners(type)
 		else:
@@ -116,15 +71,32 @@ def vogt(type):
     else:
         template = "simple_ballot.html"
 
-    vogters = filter(lambda u: u.vogts.all(), User.query.all())
+    voters = filter(lambda u: u.votes.filter_by(type=type).all(),
+                    User.query.all())
     return render_template(template, title=title, user=user, type=type,
                            options=options, form=form, winner=winners,
-                           weekly=WEEKLY_MODE, vogters=vogters, toggle=toggle)
+                           weekly=WEEKLY_MODE, voters=voters, toggle=toggle)
 
 
-@app.route('/logout')
-def logout():
-    logout_user()
+@app.route('/<type>/history')
+@login_required
+def show_history(type):
+    title = "{} Voting History".format(type.capitalize())
+    options = OPTIONS[type]
+    if isinstance(options, dict):
+        categories = options
+        options = [item for cat in categories for item in categories[cat]]
+
+    return render_template("history.html", title=title, user=g.user, type=type,
+                           history=history(type, options))
+
+
+@app.route('/<type>/close')
+@login_required
+def close(type):
+    user = g.user
+    if user.is_admin():
+        close_votes(type)
     return redirect(url_for('index'))
 
 
@@ -133,7 +105,7 @@ def logout():
 def clear():
     user = g.user
     if user.is_admin():
-        clear_vogts()
+        clear_votes()
     return redirect(url_for('index'))
 
 
@@ -173,6 +145,12 @@ def login():
             return redirect(request.args.get('next') or url_for('index'))
 
     return render_template('login.html', title="Log In", form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @lm.user_loader

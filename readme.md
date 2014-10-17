@@ -33,13 +33,12 @@ Bugs and Feature Requests
 Feature Requests
 ----------------
 
-None.
 None
 
 Known Bugs
 ----------
 
-* The "Ballots Cast" list includes ballots cast *for any type of voting*. It should be restricted to the current type (lunch, game, etc.).
+None
 
 Special Thanks
 ==============

@@ -24,8 +24,9 @@
 			a:active { text-decoration: none; color: #888888; }
 
 			body { color: #ffffff; background-color: #222222; overflow-y:auto; }
-			table { width: 100%; margin-top: 20; margin-bottom: 20; }
 			p { margin: 5px; text-align: center }
+			table { width: 100%; margin-top: 20; margin-bottom: 20; }
+			th { font-variant: small-caps; text-align: left; font-size: 115%; }
 
 			input[type="text"] { width: 100%; }
 			input[type="password"] { width: 100%; }
@@ -42,7 +43,8 @@
 			<div class="user">
 				Logged in as {{user.name}}. <a href="{{ url_for('logout') }}">Log out.</a>
 				{% if user.is_admin() %}
-					<br/><a href="{{ url_for('clear') }}">Clear All Votes</a>
+					<br/><a href="{{ url_for('close', type=type) }}">Close Voting</a>
+					<br/><a href="{{ url_for('clear') }}">Clear Votes</a>
 				{% endif %}
 			</div>
 		{% endif %}
