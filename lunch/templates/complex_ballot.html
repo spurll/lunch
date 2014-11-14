@@ -1,13 +1,23 @@
 {% extends "vogt.html" %}
 {% block ballot %}
 	<script type="text/javascript">
-		function update(list, value)
+		function update(list, o)
 		{
+			if (!o.hasOwnProperty('old'))
+			{
+				o.old = o.defaultValue;
+			}
+
+			var delta = Number(o.value) - Number(o.old);
+
 			for (var i=0; i < list.length; i++)
 			{
-				document.getElementById(list[i]).value = value;
-				relabel(list[i], value);
+				var newValue = Math.min(Math.max(Number(document.getElementById(list[i]).value) + delta, 0), 100);
+				document.getElementById(list[i]).value = newValue;
+				relabel(list[i], newValue);
 			}
+
+			o.old = o.value;
 		}
 
 		function relabel(name, value)
@@ -22,7 +32,7 @@
 			{% if winner %}
 				<td style="text-align: right; padding-top: 20px;"><input type="range" disabled/></td>
 			{% else %}
-				<td style="text-align: right; padding-top: 20px;"><input type="range" onchange='update(new Array("{{ '", "'.join(options[category]) }}"), this.value)'/></td>
+				<td style="text-align: right; padding-top: 20px;"><input type="range" value="50" onchange='update(new Array("{{ '", "'.join(options[category]) }}"), this)'/></td>
 			{% endif %}
 		</tr>
 
