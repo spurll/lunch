@@ -171,7 +171,7 @@ def slack_weekly_lunch(token):
 
 
 def slack_reminder(token, message=None):
-    if not message: message = "Please vote for next week's lunch selections!"
+    if not message: message = "Please vogt for next week's lunch selections!"
     text = "<http://savage.startleddisbelief.com/vote/lunch|" + message + ">"
     slack_message(token, text, notify=True)
 
