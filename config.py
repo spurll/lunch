@@ -71,7 +71,6 @@ OPTIONS = {
                     "Carbone Coal Fired Pizza*",
                     "Van Goes Pizza & Chicken*",
                     "Garbonzo's Pizza*",
-                    "Doughboys Pizzeria*",
                 ],
             "Mediterranean":
                 [
@@ -91,7 +90,6 @@ OPTIONS = {
                 ],
             "Middle Eastern":
                 [
-                    "Sultan's Shawarma",
                     "Shawarma Khan",
                     "Kabob Palace",
                     "Falafel Place",
@@ -130,7 +128,6 @@ OPTIONS = {
                     "Myer's Delicatessen",
                     "Red Top Drive Inn",
                     "Nook and Cranny",
-                    "Wendy's",
                     "Brogue Pubside*",
                     "Fox and Fiddle*",
                     "Chaise Cafe*",
@@ -146,7 +143,6 @@ OPTIONS = {
                     "Chester Fried Chicken",
                     "Stella's Cafe and Bakery",
                     "The Round Table*",
-                    "Bistro 7 1/4*",
                 ],
         }
     }
