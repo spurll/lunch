@@ -11,6 +11,7 @@ from util import *
 
 RUNNERS_UP = app.config["RUNNERS_UP"]
 WEEKLY_MODE = app.config["WEEKLY_MODE"]
+BIWEEKLY = app.config["BIWEEKLY"]
 OPTIONS = app.config["OPTIONS"]
 TYPES = list(OPTIONS.keys())
 
@@ -60,10 +61,14 @@ def vote(type):
  
     winners = []
     if votes:
-		if WEEKLY_MODE:
-			winners = weekly_winners(type)
-		else:
-			winners = determine_winners(type, RUNNERS_UP + 1)
+        if WEEKLY_MODE:
+            if BIWEEKLY:
+                winners = biweekly_winners(type)
+            else:
+                winners = weekly_winners(type)
+
+        else:
+            winners = determine_winners(type, RUNNERS_UP + 1)
 
     if categories:
         template = "complex_ballot.html"

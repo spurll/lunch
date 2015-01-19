@@ -1,4 +1,5 @@
 from os import urandom, path
+from collections import OrderedDict
 
 
 CSRF_ENABLED = True
@@ -15,134 +16,117 @@ ADMIN_USERS = ["gem.newman"]
 
 RUNNERS_UP = 4
 WEEKLY_MODE = True
+BIWEEKLY = True
 
 OPTIONS = {
     "game":
         [
             "Terra Mystica",
-             "Star Cluster",
-             "Agricola",
-             "Ora & Labora",
-             "Dune",
-             "Tales of the Arabian Nights",
-             "Dungeon Lords",
-             "Magic: the Gathering",
-             "Cosmic Encounter",
-             "Power Grid",
-             "Mansions of Madness",
-             "Small World",
-             "Endeavor",
-             "Dominant Species",
-             "Pandemic",
-             "Dominion",
-             "Ascension",
-             "Midgard",
-             "Race for the Galaxy",
-             "Star Trek: Deck Building Game",
+            "Star Cluster",
+            "Agricola",
+            "Ora & Labora",
+            "Dune",
+            "Tales of the Arabian Nights",
+            "Dungeon Lords",
+            "Magic: the Gathering",
+            "Cosmic Encounter",
+            "Power Grid",
+            "Mansions of Madness",
+            "Small World",
+            "Endeavor",
+            "Dominant Species",
+            "Pandemic",
+            "Dominion",
+            "Ascension",
+            "Midgard",
+            "Race for the Galaxy",
+            "Star Trek: Deck Building Game",
          ],
-    "lunch":
-        {
-            "Japanese":
+    "lunch": OrderedDict(
+        [
+            ("Japanese",
                 [
                     "Dwarf no Cachette*",
                     "Samurai Japanese*",
                     "Sushi Hon*",
                     "Sushi California*",
-                    "Sushi King*",
                     "Blufish*",
                     "Kenko Niwa Japanese*"
-                ],
-            "Indian":
+                ]),
+            ("Indian & African",
                 [
                     "Water Lily*",
                     "Clay Oven*",
                     "Karahi of India*",
-                    "Famena's Roti and Curry*",
                     "Ivory*",
                     "East India Company*",
                     "Dhoom Indian Restaurant*",
                     "Sizzling Dhaba*",
                     "The Great Maharaja*",
-                ],
-            "Pizza":
+                    "Blue Nile Ethiopian",
+                ]),
+            ("Mexican",
+                [
+                    "Vamos Tacos",
+                    "Burrito Splendido",
+                    "Casa Burrito",
+                    "Carlos & Murphy's*",
+                ]),
+            ("Mediterranean",
+                [
+                    "Flavour Fusion",
+                    "Shawarma House",
+                    "A Taste of Mediterranean",
+                    "Niko's Restaurant",
+                    "Pita Pit",
+                    "Bombolini*",
+                ]),
+            ("Pizza",
                 [
                     "Panago",
                     "Boston Pizza*",
                     "Carbone Coal Fired Pizza*",
                     "Van Goes Pizza & Chicken*",
                     "Garbonzo's Pizza*",
-                ],
-            "Mediterranean":
-                [
-                    "A Taste of Mediterranean",
-                    "Olympia Diner",
-                    "Niko's Restaurant",
-                    "Pita Pit",
-                    "Bombolini*",
-                    "Brooklyn's Bistro*",
-                ],
-            "Mexican":
-                [
-                    "Burrito Splendido",
-                    "Modern Taco Company",
-                    "Casa Burrito",
-                    "Carlos & Murphy's*",
-                ],
-            "Middle Eastern":
-                [
-                    "Shawarma Khan",
-                    "Kabob Palace",
-                    "Falafel Place",
-                ],
-            "African":
-                [
-                    "Blue Nile",
-                    "Gohe Ethiopian"
-                ],
-            "Thai":
+                ]),
+            ("Thai",
                 [
                     "Siam Thai",
                     "Thida's Thai",
-                ],
-            "Chinese":
+                ]),
+            ("Chinese",
                 [
                     "North Garden*",
                     "Asia City*",
                     "Azalea*",
                     "Szechuan Restaurant*",
-                ],
-            "Other Asian":
+                ]),
+            ("Other Asian",
                 [
-                    "Saigon Jon's Vietnamese Kitchen",
                     "Palatal Stir-Fry Express",
-                    "Pho Hoang",
+                    "Saigon Jon's Vietnamese Kitchen",
+                    "BIMI Korean/Japanese",
                     "Loha's Asian Restaurant",
-                    "Pasalubong Filipino Restaurant",
                     "Kimchi Cafe*",
-                ],
-            "Burgers & Sandwiches":
+                ]),
+            ("Burgers & Sandwiches",
                 [
-                    "Subway",
                     "Boon Burger",
                     "Garry's Deli",
                     "Myer's Delicatessen",
-                    "Red Top Drive Inn",
-                    "Nook and Cranny",
-                    "Brogue Pubside*",
                     "Fox and Fiddle*",
                     "Chaise Cafe*",
-                ],
-            "Other":
+                ]),
+            ("Cafes, Chalets, and Miscellany",
                 [
+                    "Prairie Ink Cafe",
+                    "Osborne Village Cafe",
                     "Booster Juice",
                     "Bodegoes",
                     "Joey's Only Seafood",
-                    "Elements",
-                    "Applebee's",
                     "Swiss Chalet",
                     "Chester Fried Chicken",
                     "Stella's Cafe and Bakery",
-                    "The Round Table*",
-                ],
-        }
+                ]),
+        ])
     }
