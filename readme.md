@@ -38,7 +38,7 @@ None
 Known Bugs
 ----------
 
-None
+The "Remember Me" option on the login page doesn't seem to work anymore.
 
 Special Thanks
 ==============
