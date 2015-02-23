@@ -11,4 +11,3 @@ class LoginForm(Form):
 
 class VoteForm(Form):
     favourite = BooleanField("Remember Preferences", default=False)
-    pass

@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 import ldap
 
 from lunch import app, db, lm
-from forms import LoginForm, VoteForm
+from forms import LoginForm
 from models import User, Vote, Favourite
 from authenticate import authenticate
 from util import *
