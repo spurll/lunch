@@ -1,5 +1,8 @@
 <html>
     <head>
+		<meta name="viewport" content="width=500px">
+		<meta name=“viewport” content="initial-scale=1.0">
+
 		{% if title %}
 			<title>{{title}}</title>
 		{% endif %}
@@ -35,7 +38,7 @@
 			input { color: #000000; }
 			input:disabled { color: #ffffff; }
 		</style>
-		<link rel="shortcut icon" href="/static/lunch.png"/>
+		<link rel="shortcut icon" href="{{url_for('static', filename='lunch.png')}}"/>
     </head>
 
 	<body>

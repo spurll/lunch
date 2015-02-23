@@ -1,4 +1,5 @@
 from os import urandom, path
+from collections import OrderedDict
 
 
 CSRF_ENABLED = True
@@ -15,138 +16,105 @@ ADMIN_USERS = ["gem.newman"]
 
 RUNNERS_UP = 4
 WEEKLY_MODE = True
+BIWEEKLY = True
 
 OPTIONS = {
     "game":
         [
             "Terra Mystica",
-             "Star Cluster",
-             "Agricola",
-             "Ora & Labora",
-             "Dune",
-             "Tales of the Arabian Nights",
-             "Dungeon Lords",
-             "Magic: the Gathering",
-             "Cosmic Encounter",
-             "Power Grid",
-             "Mansions of Madness",
-             "Small World",
-             "Endeavor",
-             "Dominant Species",
-             "Pandemic",
-             "Dominion",
-             "Ascension",
-             "Midgard",
-             "Race for the Galaxy",
-             "Star Trek: Deck Building Game",
+            "Star Cluster",
+            "Agricola",
+            "Ora & Labora",
+            "Dune",
+            "Tales of the Arabian Nights",
+            "Dungeon Lords",
+            "Magic: the Gathering",
+            "Cosmic Encounter",
+            "Power Grid",
+            "Mansions of Madness",
+            "Small World",
+            "Endeavor",
+            "Dominant Species",
+            "Pandemic",
+            "Dominion",
+            "Ascension",
+            "Midgard",
+            "Race for the Galaxy",
+            "Star Trek: Deck Building Game",
          ],
-    "lunch":
-        {
-            "Japanese":
+    "lunch": OrderedDict(
+        [
+            ("Japanese",
                 [
-                    "Dwarf no Cachette*",
-                    "Samurai Japanese*",
+                    "Asoyama Sushi*",
+                    "Kenko Niwa Japanese*",
+                    "Miso Japanese Restaurant*",
+                    "Sushi Gozen*",
                     "Sushi Hon*",
-                    "Sushi California*",
-                    "Sushi King*",
-                    "Blufish*",
-                    "Kenko Niwa Japanese*"
-                ],
-            "Indian":
+                    "Sushi Jet*",
+                    "Sura Suhi*",
+                    "Umi Sushi*",
+                    "Wasabi Sabi*",
+                ]),
+            ("Indian",
                 [
+                    "Tandoor House",
                     "Water Lily*",
                     "Clay Oven*",
                     "Karahi of India*",
-                    "Famena's Roti and Curry*",
-                    "Ivory*",
-                    "East India Company*",
                     "Dhoom Indian Restaurant*",
                     "Sizzling Dhaba*",
-                    "The Great Maharaja*",
-                ],
-            "Pizza":
+                ]),
+            ("Chinese",
+                [
+                    "North Garden*",
+                    "Asia City*",
+                    "Szechuan Restaurant*",
+                ]),
+            ("Other Asian",
+                [
+                    "Palatal Stir-Fry Express",
+                    "Saigon Jon's Vietnamese Kitchen",
+                    "Siam Thai",
+                    "BIMI Korean/Japanese",
+                    "Loha's Asian Restaurant",
+                ]),
+            ("Mexican",
+                [
+                    "Vamos Tacos",
+                    "Burrito Splendido",
+                    "Carlos & Murphy's*",
+                ]),
+            ("Pizza",
                 [
                     "Panago",
                     "Boston Pizza*",
                     "Carbone Coal Fired Pizza*",
                     "Van Goes Pizza & Chicken*",
                     "Garbonzo's Pizza*",
-                    "Doughboys Pizzeria*",
-                ],
-            "Mediterranean":
+                ]),
+            ("Burgers & Sandwiches",
                 [
-                    "A Taste of Mediterranean",
-                    "Olympia Diner",
-                    "Niko's Restaurant",
-                    "Pita Pit",
-                    "Bombolini*",
-                    "Brooklyn's Bistro*",
-                ],
-            "Mexican":
-                [
-                    "Burrito Splendido",
-                    "Modern Taco Company",
-                    "Casa Burrito",
-                    "Carlos & Murphy's*",
-                ],
-            "Middle Eastern":
-                [
-                    "Sultan's Shawarma",
-                    "Shawarma Khan",
-                    "Kabob Palace",
                     "Falafel Place",
-                ],
-            "African":
-                [
-                    "Blue Nile",
-                    "Gohe Ethiopian"
-                ],
-            "Thai":
-                [
-                    "Siam Thai",
-                    "Thida's Thai",
-                ],
-            "Chinese":
-                [
-                    "North Garden*",
-                    "Asia City*",
-                    "Azalea*",
-                    "Szechuan Restaurant*",
-                ],
-            "Other Asian":
-                [
-                    "Saigon Jon's Vietnamese Kitchen",
-                    "Palatal Stir-Fry Express",
-                    "Pho Hoang",
-                    "Loha's Asian Restaurant",
-                    "Pasalubong Filipino Restaurant",
-                    "Kimchi Cafe*",
-                ],
-            "Burgers & Sandwiches":
-                [
-                    "Subway",
-                    "Boon Burger",
-                    "Garry's Deli",
+                    "Pita Pit",
+                    "The Fyxx",
+                    "Junior's",
                     "Myer's Delicatessen",
-                    "Red Top Drive Inn",
-                    "Nook and Cranny",
-                    "Wendy's",
-                    "Brogue Pubside*",
-                    "Fox and Fiddle*",
-                    "Chaise Cafe*",
-                ],
-            "Other":
+                ]),
+            ("Cafes, Chalets, and Miscellany",
                 [
+                    "Confusion Corner Bar & Grill",
+                    "Desserts Plus",
+                    "Good Eats",
+                    "Saffron Restaurant",
+                    "Prairie Ink Cafe*",
+                    "Osborne Village Cafe",
                     "Booster Juice",
-                    "Bodegoes",
                     "Joey's Only Seafood",
-                    "Elements",
-                    "Applebee's",
                     "Swiss Chalet",
-                    "Chester Fried Chicken",
                     "Stella's Cafe and Bakery",
-                    "The Round Table*",
-                    "Bistro 7 1/4*",
-                ],
-        }
+                    "Applebees*",
+                    "Tony Roma's*",
+                ]),
+        ])
     }

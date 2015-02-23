@@ -50,6 +50,21 @@ def weekly_winners(type):
     return winners[:5]
 
 
+def biweekly_winners(type):
+    totals = vote_totals(type)
+    winners = sorted(totals.keys(), key=lambda x: totals[x]["total"],
+                     reverse=True)
+    premium = [w for w in winners[:10] if "*" in w]
+
+    while len(premium) > 4:
+        # Remove premiums beyond 4.
+        print "Too many premiums! Removing {}!".format(premium[4])
+        winners.remove(premium[4])
+        premium = [w for w in winners[:10] if "*" in w]
+
+    return winners[:10]
+
+
 def history(type, options):
     past = History.query.filter_by(type=type)                                 \
                         .filter(History.option.in_(options))
@@ -60,10 +75,10 @@ def history(type, options):
 
 def create_ballot(type, options, user):
     class CurrentVoteForm(VoteForm):
-		# Must be different form for games and lunch, otherwise it might be
-		# populated with one, then if the user switches be populated with the
-		# other, resulting in a bunch of hidden, invalid values that don't
-		# validate.
+        # Must be different form for games and lunch, otherwise it might be
+        # populated with one, then if the user switches be populated with the
+        # other, resulting in a bunch of hidden, invalid values that don't
+        # validate.
         pass
 
     # Create the form element for each option.
@@ -159,10 +174,25 @@ def slack_weekly_lunch(token):
     w = weekly_winners("lunch")
 
     if w:
-        text = "This week's lunches have been decided!\n\n{}\n\nPlease see "  \
-               "that you have orders placed in the <https://docs.google.com/" \
-               "spreadsheets/d/1l-j4Gdn2-eO6bnHSLuF4GJxU1irYaPdUQpXKC3Cj7Cc/" \
-               "|standing orders document>.".format("\n".join(w))
+        text = ("This week's lunches have been decided!\n\n{}\n\nPlease see "
+                "that you have orders placed in the <https://docs.google.com/"
+                "spreadsheets/d/1l-j4Gdn2-eO6bnHSLuF4GJxU1irYaPdUQpXKC3Cj7Cc/"
+                "|standing orders document>.").format("\n".join(w))
+        slack_message(token, text)
+        close_votes("lunch")
+
+    else:
+        print "No votes to tally."
+
+
+def slack_biweekly_lunch(token):
+    w = biweekly_winners("lunch")
+
+    if w:
+        text = ("The next two weeks' lunches have been decided!\n\n{}\n\n"
+                "Please see that you have orders placed in the <https://docs."
+                "google.com/spreadsheets/d/1l-j4Gdn2-eO6bnHSLuF4GJxU1irYaPdUQp"
+                "XKC3Cj7Cc/|standing orders document>.").format("\n".join(w))
         slack_message(token, text)
         close_votes("lunch")
 
