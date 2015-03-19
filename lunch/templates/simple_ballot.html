@@ -9,7 +9,9 @@
 
 	{% for name in options %}
 		<tr>
-			<td>{{form.__getattribute__(name).label}}</td>
+			<td style="padding-left: 10px;" {% if name in premium %}class="premium"{% endif %}>
+				{{ form.__getattribute__(name).label }}
+			</td>
 			{% if winner %}
 				<td style="text-align: right;">{{form.__getattribute__(name)(disabled=True)}}</td>
 			{% else %}

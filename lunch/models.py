@@ -1,4 +1,3 @@
-from __future__ import division
 from lunch import app, db
 
 
@@ -22,7 +21,7 @@ class User(db.Model):
         return self.id in app.config["ADMIN_USERS"]
 
     def get_id(self):
-        return unicode(self.id)
+        return self.id
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -58,5 +57,5 @@ class History(db.Model):
         return '<History {}: {}>'.format(self.option, self.score())
 
     def score(self):
-        return self.total / self.ballots    # Floating-point division, future.
+        return self.total / self.ballots    # Woohoo for Python 3 division!
 

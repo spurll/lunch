@@ -1,12 +1,14 @@
-from requests import post
 from slackutils import Slack
 from wtforms.fields.html5 import IntegerRangeField
 from wtforms.validators import NumberRange
 from sqlalchemy.sql import func
 
-from lunch import db
-from forms import VoteForm
-from models import User, Vote, Favourite, History
+from lunch import app, db
+from lunch.forms import VoteForm
+from lunch.models import User, Vote, Favourite, History
+
+
+PREMIUM = app.config["PREMIUM"]
 
 
 def vote_totals(type=None):
@@ -39,13 +41,13 @@ def weekly_winners(type):
     totals = vote_totals(type)
     winners = sorted(totals.keys(), key=lambda x: totals[x]["total"],
                      reverse=True)
-    premium = [w for w in winners[:5] if "*" in w]
+    premium = [w for w in winners[:5] if w in PREMIUM[type]]
 
     while len(premium) > 2:
         # Remove premiums beyond 2.
-        print "Too many premiums! Removing {}!".format(premium[2])
+        print('Too many premiums! Removing {}!'.format(premium[2]))
         winners.remove(premium[2])
-        premium = [w for w in winners[:5] if "*" in w]
+        premium = [w for w in winners[:5] if w in PREMIUM[type]]
 
     return winners[:5]
 
@@ -54,13 +56,13 @@ def biweekly_winners(type):
     totals = vote_totals(type)
     winners = sorted(totals.keys(), key=lambda x: totals[x]["total"],
                      reverse=True)
-    premium = [w for w in winners[:10] if "*" in w]
+    premium = [w for w in winners[:10] if w in PREMIUM[type]]
 
     while len(premium) > 4:
         # Remove premiums beyond 4.
-        print "Too many premiums! Removing {}!".format(premium[4])
+        print('Too many premiums! Removing {}!'.format(premium[4]))
         winners.remove(premium[4])
-        premium = [w for w in winners[:10] if "*" in w]
+        premium = [w for w in winners[:10] if w in PREMIUM[type]]
 
     return winners[:10]
 
@@ -130,7 +132,7 @@ def close_votes(type):
             History.ballots).filter_by(type=type).all()}
 
     # Update the vote history table.
-    options = totals.viewkeys() | past.viewkeys()
+    options = totals.keys() | past.keys()
     for o in options:
         t = totals.get(o, {"total": 0, "ballots": 0})
         p = past.get(o, {"total": 0, "ballots": 0})
@@ -146,10 +148,10 @@ def close_votes(type):
 
 def clear_votes(user=None):
     if user:
-        print "User: {}".format(user)
+        print('User: {}'.format(user))
         User.query.get(user.id).votes.delete()
     else:
-        print "No user."
+        print('No user.')
         Vote.query.delete()
 
     db.session.commit()
@@ -167,7 +169,7 @@ def clear_favourites(user=None):
 def slack_message(token, text, notify=False):
     s = Slack(token, name="LunchBot",
               icon="http://savage.startleddisbelief.com/LunchBot.png")
-    return s.send("#food", text, notify=notify)
+    return s.send("#lunch", text, notify=notify)
 
 
 def slack_weekly_lunch(token):
@@ -182,7 +184,7 @@ def slack_weekly_lunch(token):
         close_votes("lunch")
 
     else:
-        print "No votes to tally."
+        print('No votes to tally.')
 
 
 def slack_biweekly_lunch(token):
@@ -197,7 +199,7 @@ def slack_biweekly_lunch(token):
         close_votes("lunch")
 
     else:
-        print "No votes to tally."
+        print('No votes to tally.')
 
 
 def slack_reminder(token, message=None):

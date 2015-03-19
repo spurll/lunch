@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="text">
+		{% if premium %}
+			<p>Premium options look <span class="premium">Like This</span>.</p>
+		{% endif %}
 		<form action="" method="POST" name="{{type}}">
 			{{form.hidden_tag()}}
 			<table>
@@ -18,7 +21,7 @@
 				{% if loop.first %}
 					<div class="title" style="margin-top: 20;">Weekly {{type.capitalize()}}:</div>
 				{% endif %}
-				<div style="text-align: center;">{{w}}</div>
+				<div style="text-align: center;" {% if w in premium %}class="premium"{% endif %}>{{w}}</div>
 			{% endfor %}
 		{% else %}
 			{% for w in winner %}
@@ -27,7 +30,7 @@
 				{% elif loop.index == 1 %}
 					<div class="title" style="margin-top: 20;">Runners Up:</div>
 				{% endif %}
-				<div style="text-align: center;">{{w}}</div>
+				<div style="text-align: center;" {% if w in premium %}class="premium"{% endif %}>{{w}}</div>
 			{% endfor %}
 		{% endif %}
 

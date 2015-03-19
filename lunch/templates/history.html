@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="text">
+		{% if premium %}
+			<p>Premium options look <span class="premium">Like This</span>.</p>
+		{% endif %}
 		<table>
 			<tr><th>Option</th><th style="text-align: right;">Score</th></tr>
 			{% for h in history %}
-				<tr><td>{{h[0]}}</td><td style="text-align: right;">{{h[1]}}</td></tr>
+				<tr><td {% if h[0] in premium %}class="premium"{% endif %}>{{h[0]}}</td><td style="text-align: right;">{{h[1]}}</td></tr>
 			{% endfor %}
 		</table>
 	</div>

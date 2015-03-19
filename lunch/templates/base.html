@@ -17,6 +17,8 @@
 			.messages { font-style: italic; text-align: center; }
 			.section { padding-top: 5px; padding-bottom: 10px; }
 			.reported { color: #555555; }
+			.category { font-variant: small-caps; }
+			.premium { font-style: italic; color: #cccccc; }
 			.wide { width: 65%; top: 0px; }
 			.narrow { width: 35%; top: 0px; }
 			.right { float: right; text-align: right; }
@@ -45,6 +47,7 @@
 		{% if user %}
 			<div class="user">
 				Logged in as {{user.name}}. <a href="{{ url_for('logout') }}">Log out.</a>
+				<br/><a href="{{ url_for('clear_preferences') }}">Clear Preferences</a>
 				{% if user.is_admin() %}
 					<br/><a href="{{ url_for('close', type=type) }}">Close Voting</a>
 					<br/><a href="{{ url_for('clear') }}">Clear Votes</a>

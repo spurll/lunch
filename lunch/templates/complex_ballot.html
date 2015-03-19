@@ -28,22 +28,28 @@
 
 	{% for category in options %}
 		<tr>
-			<td style="padding-top: 20px;"><i>{{ category }}</i></td>
-			{% if winner %}
-				<td style="text-align: right; padding-top: 20px;"><input type="range" disabled/></td>
-			{% else %}
-				<td style="text-align: right; padding-top: 20px;"><input type="range" value="50" onchange='update(new Array("{{ '", "'.join(options[category]) }}"), this)'/></td>
-			{% endif %}
+			<td {% if not loop.first %}style="padding-top: 20px;"{% endif %} class="category">{{ category }}</td>
+			<td style="text-align: right; {% if not loop.first %}padding-top: 20px;{% endif %}">
+				{% if winner %}
+					<input type="range" disabled/>
+				{% else %}
+					<input type="range" value="50" onchange='update(new Array("{{ '", "'.join(options[category]) }}"), this)'/>
+				{% endif %}
+			</td>
 		</tr>
 
 		{% for name in options[category] %}
 			<tr>
-				<td style="padding-left: 10px;">{{ form.__getattribute__(name).label }}</td>
-				{% if winner %}
-					<td style="text-align: right;">{{ form.__getattribute__(name)(disabled=True) }}</td>
-				{% else %}
-					<td style="text-align: right;">{{ form.__getattribute__(name)(onchange='relabel("{}", this.value)'.format(name)) }}</td>
-				{% endif %}
+				<td style="padding-left: 10px;" {% if name in premium %}class="premium"{% endif %}>
+					{{ form.__getattribute__(name).label }}
+				</td>
+				<td style="text-align: right;">
+					{% if winner %}
+						{{ form.__getattribute__(name)(disabled=True) }}
+					{% else %}
+						{{ form.__getattribute__(name)(onchange='relabel("{}", this.value)'.format(name)) }}
+					{% endif %}
+				</td>
 				<td style="width: 30px; text-align: right;"><label id="{{ name }}//display">{{ form.__getattribute__(name).data }}</label></td>
 			</tr>
 		{% endfor %}

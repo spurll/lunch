@@ -1,24 +1,26 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
-import ldap
+import ldap3
 
 from lunch import app, db, lm
-from forms import LoginForm
-from models import User, Vote, Favourite
-from authenticate import authenticate
-from util import *
+from lunch.forms import LoginForm
+from lunch.models import User, Vote, Favourite
+from lunch.authenticate import authenticate
+from lunch.util import *
 
 
 RUNNERS_UP = app.config["RUNNERS_UP"]
 WEEKLY_MODE = app.config["WEEKLY_MODE"]
 BIWEEKLY = app.config["BIWEEKLY"]
 OPTIONS = app.config["OPTIONS"]
-TYPES = list(OPTIONS.keys())
+PREMIUM = app.config["PREMIUM"]
+TYPES = app.config["TYPES"]
 
 
 @app.route('/')
 @app.route('/index')
 def index():
+    print(TYPES)
     return redirect(url_for("vote", type=TYPES[0]))
 
 
@@ -33,6 +35,7 @@ def vote(type):
 
     toggle = TYPES[(TYPES.index(type) + 1) % len(TYPES)]
     options = OPTIONS[type]
+    premium = PREMIUM[type]
 
     title = "{} Day Voter!".format(type.capitalize())
 
@@ -48,16 +51,15 @@ def vote(type):
     form = create_ballot(type, options, user)
 
     if form.is_submitted():
-        print "Form submitted. Validating..."
+        print('Form submitted. Validating...')
 
         if form.validate_on_submit():
-            print "Validated ballot: {}".format(form)
+            print('Validated ballot: {}'.format(form))
             submit_vote(type, options, user, form)
             return redirect(url_for("vote", type=type))
 
         else:
-            print "Unable to validate."
-            print "Errors: {}".format(form.errors)
+            print('Unable to validate: {}'.format(form.errors))
  
     winners = []
     if votes:
@@ -76,11 +78,12 @@ def vote(type):
     else:
         template = "simple_ballot.html"
 
-    voters = filter(lambda u: u.votes.filter_by(type=type).all(),
-                    User.query.all())
+    voters = list(filter(lambda u: u.votes.filter_by(type=type).all(),
+                  User.query.all()))
     return render_template(template, title=title, user=user, type=type,
-                           options=options, form=form, winner=winners,
-                           weekly=WEEKLY_MODE, voters=voters, toggle=toggle)
+                           options=options, premium=premium, form=form,
+                           winner=winners, weekly=WEEKLY_MODE, voters=voters,
+                           toggle=toggle)
 
 
 @app.route('/<type>/history')
@@ -93,7 +96,8 @@ def show_history(type):
         options = [item for cat in categories for item in categories[cat]]
 
     return render_template("history.html", title=title, user=g.user, type=type,
-                           history=history(type, options))
+                           history=history(type, options),
+                           premium=PREMIUM[type])
 
 
 @app.route('/<type>/close')
@@ -114,6 +118,14 @@ def clear():
     return redirect(url_for('index'))
 
 
+@app.route('/clear_preferences')
+@login_required
+def clear_preferences():
+    user = g.user
+    clear_favourites(user)
+    return redirect(url_for('index'))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if g.user is not None and g.user.is_authenticated():
@@ -128,15 +140,12 @@ def login():
         username = form.username.data
         password = form.password.data
 
-        try:
-            print "Logging in..."
-            user = authenticate(username, password)
-        except ldap.INVALID_CREDENTIALS:
-            user = None
+        print('Logging in...')
+        user = authenticate(username, password)
 
         if not user:
-            print "Login failed."
-            flash("Login failed.")
+            print('Login failed.')
+            flash('Login failed.')
             return render_template('login.html', title="Log In", form=form)
 
         if user and user.is_authenticated():
