@@ -169,7 +169,7 @@ def clear_favourites(user=None):
 def slack_message(token, text, notify=False):
     s = Slack(token, name="LunchBot",
               icon="http://savage.startleddisbelief.com/LunchBot.png")
-    return s.send("#lunch", text, notify=notify)
+    return s.send("#food", text, notify=notify)
 
 
 def slack_weekly_lunch(token):
