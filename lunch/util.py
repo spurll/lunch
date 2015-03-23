@@ -175,6 +175,9 @@ def slack_message(token, text, notify=False):
 def slack_weekly_lunch(token):
     w = weekly_winners("lunch")
 
+    # Identify premium restaurants.
+    w = ['*_{}_*'.format(r) if r in PREMIUM["lunch"] else r for r in w]
+
     if w:
         text = ("This week's lunches have been decided!\n\n{}\n\nPlease see "
                 "that you have orders placed in the <https://docs.google.com/"
@@ -189,6 +192,9 @@ def slack_weekly_lunch(token):
 
 def slack_biweekly_lunch(token):
     w = biweekly_winners("lunch")
+
+    # Identify premium restaurants.
+    w = ['*_{}_*'.format(r) if r in PREMIUM["lunch"] else r for r in w]
 
     if w:
         text = ("The next two weeks' lunches have been decided!\n\n{}\n\n"
