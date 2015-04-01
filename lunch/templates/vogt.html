@@ -41,8 +41,4 @@
 			{% endfor %}
 		{% endif %}
 	</div>
-	<div class="toggle">
-		<a href="{{url_for("show_history", type=type)}}">{{type.capitalize()}} Voting History</a>
-		<br/><a href="{{url_for("vote", type=toggle)}}">{{toggle.capitalize()}} Day Voter</a>
-	</div>
 {% endblock %}

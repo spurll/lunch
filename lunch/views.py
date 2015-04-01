@@ -33,11 +33,17 @@ def vote(type):
         flash('Unknown type: "{}".'.format(type))
         return redirect(url_for("index"))
 
-    toggle = TYPES[(TYPES.index(type) + 1) % len(TYPES)]
     options = OPTIONS[type]
     premium = PREMIUM[type]
+    next_type = TYPES[(TYPES.index(type) + 1) % len(TYPES)]
+    links = [
+        {'url': url_for('show_history', type=type),
+         'text': '{} Voting History'.format(type.capitalize())},
+        {'url': url_for('vote', type=next_type),
+         'text': '{} Voter'.format(next_type.capitalize())}
+    ]
 
-    title = "{} Day Voter!".format(type.capitalize())
+    title = "{} Voter!".format(type.capitalize())
 
     votes = User.query.get(user.id).votes.filter_by(type=type).all()
     favourites = User.query.get(user.id).favourites.filter_by(type=type).all()
@@ -83,7 +89,7 @@ def vote(type):
     return render_template(template, title=title, user=user, type=type,
                            options=options, premium=premium, form=form,
                            winner=winners, weekly=WEEKLY_MODE, voters=voters,
-                           toggle=toggle)
+                           links=links)
 
 
 @app.route('/<type>/history')
@@ -91,13 +97,18 @@ def vote(type):
 def show_history(type):
     title = "{} Voting History".format(type.capitalize())
     options = OPTIONS[type]
+    links = [
+        {'url': url_for('vote', type=type),
+         'text': '{} Voter'.format(type.capitalize())}
+    ]
+
     if isinstance(options, dict):
         categories = options
         options = [item for cat in categories for item in categories[cat]]
 
     return render_template("history.html", title=title, user=g.user, type=type,
                            history=history(type, options),
-                           premium=PREMIUM[type])
+                           premium=PREMIUM[type], links=links)
 
 
 @app.route('/<type>/close')

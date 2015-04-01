@@ -100,6 +100,7 @@ OPTIONS = {
                 ]),
             ("Burgers & Sandwiches",
                 [
+                    "Nick's on Broadway",
                     "Flat Land Wrap",
                     "Falafel Place",
                     "Pita Pit",
