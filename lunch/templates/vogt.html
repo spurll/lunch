@@ -11,7 +11,7 @@
 				{% endblock %}
 			</table>
 			{% if not winner %}
-				<p style="margin-bottom: 20px">{{form.favourite}} {{form.favourite.label}}</p>
+				<p style="margin-bottom: 20px;">{{form.favourite}} {{form.favourite.label}}</p>
 				<p><input type="submit"/> <input type="reset"/></p>
 			{% endif %}
 		</form>
@@ -19,16 +19,16 @@
 		{% if weekly %}
 			{% for w in winner %}
 				{% if loop.first %}
-					<div class="title" style="margin-top: 20;">Weekly {{type.capitalize()}}:</div>
+					<div class="heading" style="margin-top: 20; font-size: 200%;">Weekly {{type.capitalize()}}:</div>
 				{% endif %}
 				<div style="text-align: center;" {% if w in premium %}class="premium"{% endif %}>{{w}}</div>
 			{% endfor %}
 		{% else %}
 			{% for w in winner %}
 				{% if loop.first %}
-					<div class="title" style="margin-top: 20;">Winning {{type.capitalize()}}:</div>
+					<div class="heading" style="margin-top: 20; font-size: 200%;">Winning {{type.capitalize()}}:</div>
 				{% elif loop.index == 1 %}
-					<div class="title" style="margin-top: 20;">Runners Up:</div>
+					<div class="heading" style="margin-top: 20; font-size: 200%;">Runners Up:</div>
 				{% endif %}
 				<div style="text-align: center;" {% if w in premium %}class="premium"{% endif %}>{{w}}</div>
 			{% endfor %}
