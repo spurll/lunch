@@ -5,6 +5,7 @@ from collections import OrderedDict
 CSRF_ENABLED = True
 SECRET_KEY = urandom(30)
 PROPAGATE_EXCEPTIONS = True
+REMEMBER_COOKIE_NAME = 'lunch_token'    # Needs to be unique server-wide.
 
 basedir = path.abspath(path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(path.join(basedir, "app.db"))
@@ -107,6 +108,7 @@ OPTIONS = {
                     "The Fyxx",
                     "Junior's",
                     "Myer's Delicatessen",
+                    "Barley Brothers",
                 ]),
             ("Cafes, Chalets, and Miscellany",
                 [
@@ -154,6 +156,7 @@ PREMIUM = {
         "Prairie Ink Cafe",
         "Buccaccino's",
         "Niccolinos",
+        "Barley Brothers",
         "Confusion Corner Bar & Grill",
         "Applebees",
         "Tony Roma's",
